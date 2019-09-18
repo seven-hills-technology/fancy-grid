@@ -1,1 +1,1 @@
-export {MyComponent} from './MyComponent';
+export {Grid} from './Grid';
