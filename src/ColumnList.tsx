@@ -1,5 +1,5 @@
 import React from 'react';
-import { Column } from './Column';
+import { Column, getColumnDefinitionFromColumnComponent } from './Column';
 import { ColumnDefinition } from './models/columnDefinition';
 
 export function getColumnDefinitionsFromColumnListComponent(columnList: React.ReactComponentElement<typeof ColumnList>): ColumnDefinition[] {
@@ -10,10 +10,7 @@ export function getColumnDefinitionsFromColumnListComponent(columnList: React.Re
 
         if (child.type === Column) {
             const column = child as React.ReactComponentElement<typeof Column>;
-            return {
-                name: column.props.name,
-                title: column.props.title
-            };
+            return getColumnDefinitionFromColumnComponent(column);
         }
 
         return null;

@@ -8,7 +8,6 @@ export function Example() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        // <FancyGrid.Grid dataRows={dataRows} />
         <FancyGrid.Grid dataRows={dataRows}>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
@@ -21,12 +20,17 @@ export function Example() {
                 />
                 <FancyGrid.Column
                     name="c"
-                    title="Column C"
-                />
+                    title="Column C">
+                    </FancyGrid.Column>
                 <FancyGrid.Column
                     name="d"
-                    title="Column D"
-                />
+                    title="Column D">
+                    <FancyGrid.CellRenderer>
+                        {(data: any) => (
+                            <strong>{data}</strong>
+                        )}
+                    </FancyGrid.CellRenderer>
+                </FancyGrid.Column>
             </FancyGrid.ColumnList>
         </FancyGrid.Grid>
     )

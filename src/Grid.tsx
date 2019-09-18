@@ -1,6 +1,7 @@
 import React from 'react';
 import { ColumnList, getColumnDefinitionsFromColumnListComponent } from './ColumnList';
 import { ColumnDefinition } from './models/columnDefinition';
+import { CellRendererFunction } from './models/cellRendererFunction';
 
 export interface GridProps {
     dataRows: any[];
@@ -24,7 +25,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
         }
     });
 
-    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x}));
+    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x, cellRenderer: null}));
 
     return (
         <table>
@@ -39,7 +40,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 {props.dataRows.map((dataRow, i) => (
                     <tr key={i}>
                         {columnDefinitions.map((columnDefinition, i) => (
-                            <td key={i}>{dataRow[columnDefinition.name]}</td>
+                            <td key={i}>{columnDefinition.cellRenderer != null ? (columnDefinition.cellRenderer as unknown as CellRendererFunction)(dataRow[columnDefinition.name], dataRow) : dataRow[columnDefinition.name]}</td>
                         ))}
                     </tr>
                 ))}

@@ -1,0 +1,1 @@
+export type CellRendererFunction = (data: any, dataRow?: any) => JSX.Element;
