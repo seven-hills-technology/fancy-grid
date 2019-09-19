@@ -2,6 +2,8 @@ import React from 'react';
 import { ColumnList, getColumnDefinitionsFromColumnListComponent } from './ColumnList';
 import { ColumnDefinition } from './models/columnDefinition';
 import { CellRendererFunction } from './models/cellRendererFunction';
+import { PageState } from './models/pageState';
+import { Pager } from './Pager';
 
 export interface GridProps {
     dataRows: any[];
@@ -13,6 +15,7 @@ function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
 
 export const Grid: React.FunctionComponent<GridProps> = (props) => {
     let columnListColumnDefinitions: ColumnDefinition[] | null = null;
+    let pageState: PageState | null = null;
 
     React.Children.forEach(props.children, child => {
         if (!React.isValidElement(child)) {
@@ -22,6 +25,13 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
         if (child.type === ColumnList) {
             const columnList = child as React.ReactComponentElement<typeof ColumnList>;
             columnListColumnDefinitions = getColumnDefinitionsFromColumnListComponent(columnList);
+        } else if (child.type === Pager) {
+            const pager = child as React.ReactComponentElement<typeof Pager>;
+            pageState = {
+                page: pager.props.page,
+                numPages: pager.props.numPages,
+                onPageChange: pager.props.onPageChange
+            }
         }
     });
 
@@ -45,6 +55,17 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                     </tr>
                 ))}
             </tbody>
+            {pageState != null ? (
+                <tfoot>
+                    <tr>
+                        <td colSpan={columnDefinitions.length}>
+                            <button disabled={pageState!.page <= 0} onClick={() => pageState!.onPageChange(pageState!.page - 1)}>&lt;</button>
+                            <span>{pageState!.page + 1}</span>
+                            <button disabled={pageState!.page >= (pageState!.numPages - 1)} onClick={() => pageState!.onPageChange(pageState!.page + 1)}>&gt;</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            ) : null}
         </table>
     )
 }
