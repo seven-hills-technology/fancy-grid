@@ -4,6 +4,8 @@ import { ColumnDefinition } from './models/columnDefinition';
 import { CellRendererFunction } from './models/cellRendererFunction';
 import { PageState } from './models/pageState';
 import { Pager } from './Pager';
+import { SortState, SortCollection } from './models/sortState';
+import { Sortable } from './Sortable';
 
 export interface GridProps {
     dataRows: any[];
@@ -16,6 +18,30 @@ function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
 export const Grid: React.FunctionComponent<GridProps> = (props) => {
     let columnListColumnDefinitions: ColumnDefinition[] | null = null;
     let pageState: PageState | null = null;
+    let sortState: SortState | null = null;
+
+    function columnHeaderClicked(columnDefinition: ColumnDefinition) {
+        if (sortState != null) {
+            if (sortState.sort.length > 0 && sortState.sort[0].fieldName === columnDefinition.name) {
+                const dir = sortState.sort[0].dir === 'desc' ? 'asc' : 'desc';
+                const newSort: SortCollection = [
+                    {
+                        fieldName: columnDefinition.name,
+                        dir
+                    }
+                ];
+                sortState.onSortChange(newSort);
+            } else {
+                const newSort: SortCollection = [
+                    {
+                        fieldName: columnDefinition.name,
+                        dir: 'asc'
+                    }
+                ];
+                sortState.onSortChange(newSort);
+            }
+        }
+    }
 
     React.Children.forEach(props.children, child => {
         if (!React.isValidElement(child)) {
@@ -32,6 +58,12 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 numPages: pager.props.numPages,
                 onPageChange: pager.props.onPageChange
             }
+        } else if (child.type === Sortable) {
+            const sortable = child as React.ReactComponentElement<typeof Sortable>;
+            sortState = {
+                sort: sortable.props.sort || [],
+                onSortChange: sortable.props.onSortChange
+            };
         }
     });
 
@@ -42,7 +74,12 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
             <thead>
                 <tr>
                     {columnDefinitions.map((columnDefinition, i) => (
-                        <th key={i}>{columnDefinition.title}</th>
+                        <th key={i} onClick={() => columnHeaderClicked(columnDefinition)}>
+                            {columnDefinition.title}
+                            {sortState != null && sortState.sort != null && sortState.sort.length > 0 && sortState.sort[0].fieldName === columnDefinition.name ? (
+                                sortState.sort[0].dir === 'desc' ? <span> (desc)</span> : <span> (asc)</span>
+                            ) : null}
+                        </th>
                     ))}
                 </tr>
             </thead>

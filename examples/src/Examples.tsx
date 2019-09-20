@@ -7,6 +7,7 @@ import { AbsoluteBasicGridExample, code as absoluteBasicGridExampleCode } from '
 import { CustomColumnTitlesExample, code as customColumnTitlesExampleCode } from './CustomColumnTitlesExample';
 import { CustomCellRendererExample, code as customCellRendererExampleCode } from './CustomCellRendererExample';
 import { PagerExample, code as pagerExampleCode } from './PagerExample';
+import { SortableExample, code as sortableExampleCode } from './SortableExample';
 
 export function Examples() {
     return (
@@ -26,6 +27,10 @@ export function Examples() {
             <div className="example-container">
                 <SyntaxHighlighter language="jsx" style={theme}>{pagerExampleCode}</SyntaxHighlighter>
                 <PagerExample />
+            </div>
+            <div className="example-container">
+                <SyntaxHighlighter language="jsx" style={theme}>{sortableExampleCode}</SyntaxHighlighter>
+                <SortableExample />
             </div>
         </div>
     )
