@@ -1,10 +1,8 @@
 import React from 'react';
+import { PageState } from './models/pageState';
 
-export interface PagerProps {
+export interface PagerProps extends PageState {
     children?: null;
-    page: number;
-    numPages: number;
-    onPageChange: (newPage: number) => void;
 }
 
 export const Pager: React.FunctionComponent<PagerProps> = () => {

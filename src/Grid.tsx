@@ -9,6 +9,7 @@ import { Sortable } from './Sortable';
 
 export interface GridProps {
     dataRows: any[];
+    count?: number;
 }
 
 function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
@@ -56,7 +57,9 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
             pageState = {
                 page: pager.props.page,
                 numPages: pager.props.numPages,
-                onPageChange: pager.props.onPageChange
+                onPageChange: pager.props.onPageChange,
+                pageSize: pager.props.pageSize,
+                onPageSizeChange: pager.props.onPageSizeChange
             }
         } else if (child.type === Sortable) {
             const sortable = child as React.ReactComponentElement<typeof Sortable>;
@@ -99,6 +102,17 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                             <button disabled={pageState!.page <= 0} onClick={() => pageState!.onPageChange(pageState!.page - 1)}>&lt;</button>
                             <span>{pageState!.page + 1}</span>
                             <button disabled={pageState!.page >= (pageState!.numPages - 1)} onClick={() => pageState!.onPageChange(pageState!.page + 1)}>&gt;</button>
+                        </td>
+                        <td>
+                            <select onChange={(event) => pageState!.onPageSizeChange(Number(event.target.value), pageState!.pageSize)} value={pageState!.pageSize}>
+                                {[5, 10, 20, 50, 100].map(pageSize => (
+                                    <option key={pageSize} value={pageSize}>
+                                        Show {pageSize}
+                                    </option>
+                                ))}
+                            </select> 
+                        </td>
+                        <td> {(((pageState!.page + 1) * pageState!.pageSize) - pageState!.pageSize ) + 1 + " - " + ((pageState!.page * pageState!.pageSize) + props.dataRows.length) + " of " + props.count + " items"}
                         </td>
                     </tr>
                 </tfoot>

@@ -65,7 +65,7 @@ function applySort(dataRows: any[], sorts: FancyGrid.SortCollection) {
 
 export function SortableExample() {
     const [sortState, setSortState] = useState([] as FancyGrid.SortCollection);
-    const dataRows = applySort(usStates, sortState);
+    const dataRows = applySort(usStates.data, sortState);
     
     return (
         <FancyGrid.Grid dataRows={dataRows}>

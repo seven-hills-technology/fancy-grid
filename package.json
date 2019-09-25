@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "examples": "webpack-dev-server --config webpack.examples.config.js",
+    "examples": "yarn build && webpack-dev-server --config webpack.examples.config.js",
     "build": "rm -rf ./dist && webpack --mode=production",
     "watch": "webpack --watch --mode=production",
     "clean": "rm -rf ./dist",
