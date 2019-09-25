@@ -99,9 +99,11 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 <tfoot>
                     <tr>
                         <td colSpan={columnDefinitions.length}>
+                            <button disabled={pageState!.page <= 0} onClick={() => pageState!.onPageChange(0)}>&lt;&lt;</button>
                             <button disabled={pageState!.page <= 0} onClick={() => pageState!.onPageChange(pageState!.page - 1)}>&lt;</button>
                             <span>{pageState!.page + 1}</span>
                             <button disabled={pageState!.page >= (pageState!.numPages - 1)} onClick={() => pageState!.onPageChange(pageState!.page + 1)}>&gt;</button>
+                            <button disabled={pageState!.page >= (pageState!.numPages - 1)} onClick={() => pageState!.onPageChange(pageState!.numPages - 1)}>&gt;&gt;</button>
                         </td>
                         <td>
                             <select onChange={(event) => pageState!.onPageSizeChange(Number(event.target.value), pageState!.pageSize)} value={pageState!.pageSize}>
