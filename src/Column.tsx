@@ -1,6 +1,7 @@
 import React from 'react';
 import { ColumnDefinition } from './models/columnDefinition';
 import { CellRenderer } from './CellRenderer';
+import { FilterType } from './models/filterType';
 
 export type ColumnProps = ColumnDefinition;
 
@@ -28,6 +29,8 @@ export function getColumnDefinitionFromColumnComponent(column: React.ReactCompon
     return {
         name: column.props.name,
         title: column.props.title,
-        cellRenderer: cellRendererFunction
+        cellRenderer: cellRendererFunction,
+        onFilterChange: column.props.onFilterChange,
+        filterType: column.props.filterType != null ? column.props.filterType : FilterType.Contains
     };
 }

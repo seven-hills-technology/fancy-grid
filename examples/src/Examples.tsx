@@ -8,6 +8,7 @@ import { CustomColumnTitlesExample, code as customColumnTitlesExampleCode } from
 import { CustomCellRendererExample, code as customCellRendererExampleCode } from './CustomCellRendererExample';
 import { PagerExample, code as pagerExampleCode } from './PagerExample';
 import { SortableExample, code as sortableExampleCode } from './SortableExample';
+import { FilterableExample, code as filterableExample } from './FilterableExample';
 
 export function Examples() {
     return (
@@ -31,6 +32,10 @@ export function Examples() {
             <div className="example-container">
                 <SyntaxHighlighter language="jsx" style={theme}>{sortableExampleCode}</SyntaxHighlighter>
                 <SortableExample />
+            </div>
+            <div className="example-container">
+                <SyntaxHighlighter language="jsx" style={theme}>{filterableExample}</SyntaxHighlighter>
+                <FilterableExample />
             </div>
         </div>
     )
