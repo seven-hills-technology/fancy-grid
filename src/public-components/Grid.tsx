@@ -1,12 +1,12 @@
 import React from 'react';
 import { ColumnList, getColumnDefinitionsFromColumnListComponent } from './ColumnList';
-import { ColumnDefinition } from './models/columnDefinition';
-import { CellRendererFunction } from './models/cellRendererFunction';
-import { PageState } from './models/pageState';
+import { ColumnDefinition } from '../models/columnDefinition';
+import { CellRendererFunction } from '../models/cellRendererFunction';
+import { PageState } from '../models/pageState';
 import { Pager } from './Pager';
-import { SortState, SortCollection } from './models/sortState';
+import { SortState, SortCollection } from '../models/sortState';
 import { Sortable } from './Sortable';
-import { FilterState, FilterCollection } from './models/filterState';
+import { FilterState, FilterCollection } from '../models/filterState';
 import { Filterable } from './Filterable';
 
 export interface GridProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColumnDefinition } from './models/columnDefinition';
+import { ColumnDefinition } from '../models/columnDefinition';
 import { CellRenderer } from './CellRenderer';
 
 export type ColumnProps = ColumnDefinition;

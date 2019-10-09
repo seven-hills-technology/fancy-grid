@@ -1,10 +1,10 @@
 export { SortCollection } from './models/sortState';
 export { FilterCollection } from './models/filterState';
 export { FilterType } from './models/filterType';
-export {Grid} from './Grid';
-export {ColumnList} from './ColumnList';
-export {Column} from './Column';
-export {CellRenderer} from './CellRenderer';
-export {Pager} from './Pager';
-export {Sortable} from './Sortable';
-export {Filterable} from './Filterable';
+export {Grid} from './public-components/Grid';
+export {ColumnList} from './public-components/ColumnList';
+export {Column} from './public-components/Column';
+export {CellRenderer} from './public-components/CellRenderer';
+export {Pager} from './public-components/Pager';
+export {Sortable} from './public-components/Sortable';
+export {Filterable} from './public-components/Filterable';

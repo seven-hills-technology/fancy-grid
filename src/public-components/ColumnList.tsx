@@ -1,6 +1,6 @@
 import React from 'react';
 import { Column, getColumnDefinitionFromColumnComponent } from './Column';
-import { ColumnDefinition } from './models/columnDefinition';
+import { ColumnDefinition } from '../models/columnDefinition';
 
 export function getColumnDefinitionsFromColumnListComponent(columnList: React.ReactComponentElement<typeof ColumnList>): ColumnDefinition[] {
     const columnDefinitions = React.Children.map(columnList.props.children, child => {
