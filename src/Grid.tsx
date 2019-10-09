@@ -47,7 +47,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
         }
     }
 
-    function filterTyped(columnDefinition: ColumnDefinition, value: string) {
+    function onFilterTextChanged(columnDefinition: ColumnDefinition, value: string) {
         if (filterState != null) {
             let newFilter: FilterCollection = Object.assign([], filterState.filter);
             if (newFilter.length > 0) {
@@ -67,7 +67,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                     newFilter.push({
                         fieldName: columnDefinition.name,
                         value: value,
-                        filterType: columnDefinition.filterType!
+                        filterType: null
                     });
                 }
             } else {
@@ -76,11 +76,11 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                     {
                         fieldName: columnDefinition.name,
                         value: value,
-                        filterType: columnDefinition.filterType!
+                        filterType: null
                     }
                 ];
             }
-            columnDefinition.onFilterChange!(newFilter);
+            filterState.onFilterChange!(newFilter);
         }
     }
 
@@ -110,12 +110,13 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
         } else if (child.type === Filterable) {
             const filterable = child as React.ReactComponentElement<typeof Filterable>;
             filterState = {
-                filter: filterable.props.filter || []
+                filter: filterable.props.filter || [],
+                onFilterChange: filterable.props.onFilterChange
             };
         }
     });
 
-    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x, cellRenderer: null, filter: [], onFilterChange: null, filterType: null}));
+    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 
     return (
         <table>
@@ -127,9 +128,9 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                             {sortState != null && sortState.sort != null && sortState.sort.length > 0 && sortState.sort[0].fieldName === columnDefinition.name ? (
                                 sortState.sort[0].dir === 'desc' ? <span> (desc)</span> : <span> (asc)</span>
                             ) : null}
-                            {columnDefinition.onFilterChange != null && filterState!= null ? (
+                            {filterState!= null ? (
                                 <div>
-                                    <input name={columnDefinition.name} type="text" placeholder={columnDefinition.title}  onChange={(event) => filterTyped(columnDefinition, event.target.value)} />
+                                    <input name={columnDefinition.name} type="text" placeholder={columnDefinition.title}  onChange={(event) => onFilterTextChanged(columnDefinition, event.target.value)} />
                                 </div>
                             ) : null}
                         </th>

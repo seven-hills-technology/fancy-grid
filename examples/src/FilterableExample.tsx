@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import FancyGrid from '../../dist';
 
 import usStates from './states.json';
-import { FilterType } from '../../src/models/filterType';
 
 export const code = `function applyFilter(dataRows: any[], filters: FancyGrid.FilterCollection) {
     let filteredDataRows = dataRows;
@@ -11,13 +10,18 @@ export const code = `function applyFilter(dataRows: any[], filters: FancyGrid.Fi
             filteredDataRows = filteredDataRows.filter((x, i) => {
                 const xVal = x[fieldName].toLowerCase();
                 switch (filterType) {
-                    case FilterType.StartsWith:
+                    case FancyGrid.FilterType.StartsWith:
                         if (String(xVal).startsWith(value.toLowerCase())) {
                             return true;
                         }
                         break;
-                    case FilterType.Contains:
+                    case FancyGrid.FilterType.Contains:
                         if (String(xVal).includes(value.toLowerCase())) {
+                            return true;
+                        }
+                        break;
+                    default:
+                        if (String(xVal).startsWith(value.toLowerCase())) {
                             return true;
                         }
                         break;
@@ -37,16 +41,12 @@ export function FilterableExample() {
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
-                    title="Name"
-                    onFilterChange={setFilterState}
-                    filterType={FilterType.StartsWith}/>
+                    title="Name"/>
                 <FancyGrid.Column
                     name="abbreviation"
-                    title="Abbreviation"
-                    onFilterChange={setFilterState}
-                    filterType={FilterType.Contains}/>
+                    title="Abbreviation"/>
             </FancyGrid.ColumnList>
-            <FancyGrid.Filterable filter={filterState}/>
+            <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
         </FancyGrid.Grid>
     )
 }`
@@ -58,13 +58,18 @@ function applyFilter(dataRows: any[], filters: FancyGrid.FilterCollection) {
             filteredDataRows = filteredDataRows.filter((x, i) => {
                 const xVal = x[fieldName].toLowerCase();
                 switch (filterType) {
-                    case FilterType.StartsWith:
+                    case FancyGrid.FilterType.StartsWith:
                         if (String(xVal).startsWith(value.toLowerCase())) {
                             return true;
                         }
                         break;
-                    case FilterType.Contains:
+                    case FancyGrid.FilterType.Contains:
                         if (String(xVal).includes(value.toLowerCase())) {
+                            return true;
+                        }
+                        break;
+                    default:
+                        if (String(xVal).startsWith(value.toLowerCase())) {
                             return true;
                         }
                         break;
@@ -84,16 +89,12 @@ export function FilterableExample() {
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
-                    title="Name"
-                    onFilterChange={setFilterState}
-                    filterType={FilterType.StartsWith}/>
+                    title="Name"/>
                 <FancyGrid.Column
                     name="abbreviation"
-                    title="Abbreviation"
-                    onFilterChange={setFilterState}
-                    filterType={FilterType.Contains}/>
+                    title="Abbreviation"/>
             </FancyGrid.ColumnList>
-            <FancyGrid.Filterable filter={filterState}/>
+            <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
         </FancyGrid.Grid>
     )
 }

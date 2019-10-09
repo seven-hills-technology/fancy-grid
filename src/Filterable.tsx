@@ -1,7 +1,7 @@
 import React from 'react';
-import { FilterCollection } from './models/filterState';
+import { FilterCollection, FilterState } from './models/filterState';
 
-export interface FilterableProps {
+export interface FilterableProps extends FilterState {
     children?: null;
     filter: FilterCollection;
 }
