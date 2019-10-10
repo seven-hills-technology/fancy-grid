@@ -12,3 +12,5 @@ export const DataCell: React.FunctionComponent<DataCellProps> = props => {
         {renderedValue}
     </td>
 }
+
+DataCell.displayName = "FancyGrid.DataCell";

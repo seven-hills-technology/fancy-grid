@@ -19,3 +19,5 @@ export const DataRow: React.FunctionComponent<DataRowProps> = props => {
         ))}
     </tr>
 }
+
+DataRow.displayName = "FancyGrid.DataRow";

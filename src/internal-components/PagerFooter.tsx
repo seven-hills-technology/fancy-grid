@@ -35,3 +35,5 @@ export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props 
         </tfoot>
     )
 }
+
+PagerFooter.displayName = "FancyGrid.PagerFooter";

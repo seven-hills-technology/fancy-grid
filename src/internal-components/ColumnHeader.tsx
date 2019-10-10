@@ -26,3 +26,5 @@ export const ColumnHeader: React.FunctionComponent<ColumnHeaderRowProps> = props
         </thead>
     )
 }
+
+ColumnHeader.displayName = "FancyGrid.ColumnHeader";

@@ -18,3 +18,5 @@ export const DataBody: React.FunctionComponent<DataBodyProps> = props => {
         ))}
     </tbody>
 }
+
+DataBody.displayName = "FancyGrid.DataBody";

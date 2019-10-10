@@ -83,3 +83,5 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
         </th>
     )
 }
+
+ColumnHeaderCell.displayName = "FancyGrid.ColumnHeaderCell";

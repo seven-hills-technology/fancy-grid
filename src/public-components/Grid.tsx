@@ -93,3 +93,5 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
         </table>
     )
 }
+
+Grid.displayName = "FancyGrid.Grid";
