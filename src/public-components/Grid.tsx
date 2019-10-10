@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ColumnList, getColumnDefinitionsFromColumnListComponent } from './ColumnList';
 import { ColumnDefinition } from '../models/columnDefinition';
 import { PageState } from '../models/pageState';
@@ -20,13 +20,19 @@ function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
     return [...new Set(([] as string[]).concat(...list.map(x => Object.keys(x))))];
 }
 
-export const Grid: React.FunctionComponent<GridProps> = (props) => {
+function extractInformationFromGridChildren(children: ReactNode): {
+    columnListColumnDefinitions: ColumnDefinition[] | null,
+    pageState: PageState | null,
+    sortState: SortState | null,
+    filterState: FilterState | null
+} {
+
     let columnListColumnDefinitions: ColumnDefinition[] | null = null;
     let pageState: PageState | null = null;
     let sortState: SortState | null = null;
     let filterState: FilterState | null = null;
 
-    React.Children.forEach(props.children, child => {
+    React.Children.forEach(children, child => {
         if (!React.isValidElement(child)) {
             return;
         }
@@ -55,9 +61,14 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 filter: filterable.props.filter || [],
                 onFilterChange: filterable.props.onFilterChange
             };
-        }
+        } 
     });
 
+    return {columnListColumnDefinitions, pageState, sortState, filterState};
+}
+
+export const Grid: React.FunctionComponent<GridProps> = (props) => {
+    const {columnListColumnDefinitions, pageState, sortState, filterState} = extractInformationFromGridChildren(props.children);
     const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 
     return (
