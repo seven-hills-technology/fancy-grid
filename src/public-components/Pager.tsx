@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageState } from './models/pageState';
+import { PageState } from '../models/pageState';
 
 export interface PagerProps extends PageState {
     children?: null;

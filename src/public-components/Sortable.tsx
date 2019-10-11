@@ -1,5 +1,5 @@
 import React from 'react';
-import { SortState } from './models/sortState';
+import { SortState } from '../models/sortState';
 
 export interface SortableProps extends SortState {
     children?: null;
