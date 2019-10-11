@@ -3,7 +3,7 @@ import FancyGrid from '../../dist';
 
 import usStates from './states.json';
 
-export const code = `unction applySort(dataRows: any[], sorts: FancyGrid.SortCollection) {
+export const code = `function applySort(dataRows: any[], sorts: FancyGrid.SortCollection) {
     return dataRows.sort((a, b) => {
         for (const sort of sorts) {
             const {fieldName, dir} = sort;

@@ -1,7 +1,10 @@
 export { SortCollection } from './models/sortState';
+export { FilterCollection } from './models/filterState';
+export { FilterType } from './models/filterType';
 export {Grid} from './Grid';
 export {ColumnList} from './ColumnList';
 export {Column} from './Column';
 export {CellRenderer} from './CellRenderer';
 export {Pager} from './Pager';
 export {Sortable} from './Sortable';
+export {Filterable} from './Filterable';

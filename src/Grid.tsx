@@ -6,6 +6,8 @@ import { PageState } from './models/pageState';
 import { Pager } from './Pager';
 import { SortState, SortCollection } from './models/sortState';
 import { Sortable } from './Sortable';
+import { FilterState, FilterCollection } from './models/filterState';
+import { Filterable } from './Filterable';
 
 export interface GridProps {
     dataRows: any[];
@@ -20,6 +22,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
     let columnListColumnDefinitions: ColumnDefinition[] | null = null;
     let pageState: PageState | null = null;
     let sortState: SortState | null = null;
+    let filterState: FilterState | null = null;
 
     function columnHeaderClicked(columnDefinition: ColumnDefinition) {
         if (sortState != null) {
@@ -41,6 +44,43 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 ];
                 sortState.onSortChange(newSort);
             }
+        }
+    }
+
+    function onFilterTextChanged(columnDefinition: ColumnDefinition, value: string) {
+        if (filterState != null) {
+            let newFilter: FilterCollection = Object.assign([], filterState.filter);
+            if (newFilter.length > 0) {
+                const fieldNames: string[] = newFilter.map((x) => x.fieldName);
+                //Check to see if there's a field that matches the filter already
+                if (fieldNames.includes(columnDefinition.name)) {
+                    const index = fieldNames.indexOf(columnDefinition.name);
+                    if (value.length == 0) {
+                        //If there is an the textbox is empty, remove the filter
+                        newFilter.splice(index)
+                    } else {
+                        //Update filter
+                        newFilter[index].value = value;
+                    }
+                } else {
+                    //If not, add it
+                    newFilter.push({
+                        fieldName: columnDefinition.name,
+                        value: value,
+                        filterType: null
+                    });
+                }
+            } else {
+                //If adding a filter but no filters exist
+                newFilter = [
+                    {
+                        fieldName: columnDefinition.name,
+                        value: value,
+                        filterType: null
+                    }
+                ];
+            }
+            filterState.onFilterChange!(newFilter);
         }
     }
 
@@ -67,10 +107,16 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 sort: sortable.props.sort || [],
                 onSortChange: sortable.props.onSortChange
             };
+        } else if (child.type === Filterable) {
+            const filterable = child as React.ReactComponentElement<typeof Filterable>;
+            filterState = {
+                filter: filterable.props.filter || [],
+                onFilterChange: filterable.props.onFilterChange
+            };
         }
     });
 
-    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x, cellRenderer: null}));
+    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 
     return (
         <table>
@@ -81,6 +127,11 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                             {columnDefinition.title}
                             {sortState != null && sortState.sort != null && sortState.sort.length > 0 && sortState.sort[0].fieldName === columnDefinition.name ? (
                                 sortState.sort[0].dir === 'desc' ? <span> (desc)</span> : <span> (asc)</span>
+                            ) : null}
+                            {filterState!= null ? (
+                                <div>
+                                    <input name={columnDefinition.name} type="text" placeholder={columnDefinition.title}  onChange={(event) => onFilterTextChanged(columnDefinition, event.target.value)} />
+                                </div>
                             ) : null}
                         </th>
                     ))}
