@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FancyGrid from '../../dist';
+import FancyGrid, { FilterType } from '../../dist';
 
 import usStates from './states.json';
 
@@ -69,11 +69,6 @@ function applyFilter(dataRows: any[], filters: FancyGrid.FilterCollection) {
                             return true;
                         }
                         break;
-                    default:
-                        if (String(xVal).startsWith(value.toLowerCase())) {
-                            return true;
-                        }
-                        break;
                 }
                 return false;
             });
@@ -95,7 +90,7 @@ export function FilterableExample() {
                     name="abbreviation"
                     title="Abbreviation"/>
             </FancyGrid.ColumnList>
-            <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
+            <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState} defaultFilter={FilterType.StartsWith}/>
             <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )

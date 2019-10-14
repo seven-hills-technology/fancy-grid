@@ -1,4 +1,4 @@
 export enum FilterType {
-    StartsWith = 'StartsWith',
+    StartsWith = 'Starts With',
     Contains = 'Contains'
 }

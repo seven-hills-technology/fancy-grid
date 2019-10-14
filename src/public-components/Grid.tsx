@@ -57,7 +57,7 @@ function extractInformationFromGridChildren(children: ReactNode): {
             dataSource = {
                 data: localDataSource.props.data
             }
-        }else if (child.type === RemoteDataSource) {
+        } else if (child.type === RemoteDataSource) {
             const remoteDataSource = child as React.ReactComponentElement<typeof RemoteDataSource>;
             dataSource = {
                 fetchData: remoteDataSource.props.fetchData
