@@ -96,7 +96,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
     const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(dataResult.data).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 
     return (
-        <table>
+        <table className="fancy-grid">
             <ColumnHeader
                 columnDefinitions={columnDefinitions}
                 sortState={sortState}

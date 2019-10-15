@@ -8,7 +8,7 @@ export interface DataCellProps {
 
 export const DataCell: React.FunctionComponent<DataCellProps> = props => {
     const renderedValue = props.cellRenderer != null ? props.cellRenderer(props.cellValue) : props.cellValue;
-    return <td>
+    return <td className="fancy-grid-body-cell">
         {renderedValue}
     </td>
 }

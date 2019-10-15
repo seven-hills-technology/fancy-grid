@@ -9,7 +9,7 @@ export interface DataRowProps {
 }
 
 export const DataRow: React.FunctionComponent<DataRowProps> = props => {
-    return <tr>
+    return <tr className="fancy-grid-body-row">
         {props.columnDefinitions.map((columnDefinition, i) => (
             <DataCell
                 key={i}

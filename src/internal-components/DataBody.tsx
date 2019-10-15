@@ -8,7 +8,7 @@ export interface DataBodyProps {
 }
 
 export const DataBody: React.FunctionComponent<DataBodyProps> = props => {
-    return <tbody>
+    return <tbody className="fancy-grid-body">
         {props.dataItems.map((dataItem, i) => (
             <DataRow
                 key={i}
