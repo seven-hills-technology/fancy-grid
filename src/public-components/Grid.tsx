@@ -13,7 +13,6 @@ import { PagerFooter } from '../internal-components/PagerFooter';
 
 export interface GridProps {
     dataRows: any[];
-    count?: number;
 }
 
 function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
@@ -43,6 +42,7 @@ function extractInformationFromGridChildren(children: ReactNode): {
         } else if (child.type === Pager) {
             const pager = child as React.ReactComponentElement<typeof Pager>;
             pageState = {
+                count: pager.props.count,
                 page: pager.props.page,
                 numPages: pager.props.numPages,
                 onPageChange: pager.props.onPageChange,
@@ -87,7 +87,6 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                     columnDefinitions={columnDefinitions}
                     pageState={pageState}
                     dataRows={props.dataRows}
-                    count={props.count!}
                 />
             ) : null}
         </table>

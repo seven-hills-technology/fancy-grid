@@ -6,7 +6,6 @@ export interface ColumnHeaderRowProps {
     columnDefinitions: ColumnDefinition[];
     pageState: PageState;
     dataRows: any[];
-    count: number;
 }
 
 export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props => {
@@ -29,7 +28,7 @@ export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props 
                         ))}
                     </select> 
                 </td>
-                <td> {(((props.pageState.page + 1) * props.pageState.pageSize) - props.pageState.pageSize ) + 1 + " - " + ((props.pageState.page * props.pageState.pageSize) + props.dataRows.length) + " of " + props.count + " items"}
+                <td> {(((props.pageState.page + 1) * props.pageState.pageSize) - props.pageState.pageSize ) + 1 + " - " + ((props.pageState.page * props.pageState.pageSize) + props.dataRows.length) + " of " + props.pageState.count + " items"}
                 </td>
             </tr>
         </tfoot>

@@ -67,7 +67,7 @@ export function PagerExample() {
     };
     
     return (
-        <FancyGrid.Grid dataRows={currentPage} count={usStates.count}>
+        <FancyGrid.Grid dataRows={currentPage}>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -79,11 +79,12 @@ export function PagerExample() {
                 />
             </FancyGrid.ColumnList>
             <FancyGrid.Pager
-                page={pageNum}
+                count={usStates.count}
                 numPages={numPages}
                 onPageChange={onPageChange}
-                pageSize={pageSizeNum}
                 onPageSizeChange={onPageSizeChange}
+                page={pageNum}
+                pageSize={pageSizeNum}
             />
         </FancyGrid.Grid>
     )

@@ -38,7 +38,7 @@ export function CustomColumnTitlesExample() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        <FancyGrid.Grid dataRows={dataRows} count={3}>
+        <FancyGrid.Grid dataRows={dataRows}>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="a"
