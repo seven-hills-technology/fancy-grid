@@ -3,17 +3,17 @@ import { ColumnList, getColumnDefinitionsFromColumnListComponent } from './Colum
 import { ColumnDefinition } from '../models/columnDefinition';
 import { PageState } from '../models/pageState';
 import { Pager } from './Pager';
-import { SortState, SortCollection } from '../models/sortState';
+import { SortState } from '../models/sortState';
 import { Sortable } from './Sortable';
-import { FilterState, FilterCollection } from '../models/filterState';
+import { FilterState } from '../models/filterState';
 import { Filterable } from './Filterable';
 import { DataBody } from '../internal-components/DataBody';
 import { ColumnHeader } from '../internal-components/ColumnHeader';
 import { PagerFooter } from '../internal-components/PagerFooter';
+import { LocalDataSource } from './LocalDataSource';
+import { DataSourceDefinition } from '../models/dataSourceDefinition';
 
-export interface GridProps {
-    dataRows: any[];
-}
+export interface GridProps { }
 
 function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
     return [...new Set(([] as string[]).concat(...list.map(x => Object.keys(x))))];
@@ -23,13 +23,15 @@ function extractInformationFromGridChildren(children: ReactNode): {
     columnListColumnDefinitions: ColumnDefinition[] | null,
     pageState: PageState | null,
     sortState: SortState | null,
-    filterState: FilterState | null
+    filterState: FilterState | null,
+    dataSource: DataSourceDefinition
 } {
 
     let columnListColumnDefinitions: ColumnDefinition[] | null = null;
     let pageState: PageState | null = null;
     let sortState: SortState | null = null;
     let filterState: FilterState | null = null;
+    let dataSource: DataSourceDefinition = {data: []};
 
     React.Children.forEach(children, child => {
         if (!React.isValidElement(child)) {
@@ -61,15 +63,27 @@ function extractInformationFromGridChildren(children: ReactNode): {
                 filter: filterable.props.filter || [],
                 onFilterChange: filterable.props.onFilterChange
             };
-        } 
+        } else if (child.type === LocalDataSource) {
+            const localDataSource = child as React.ReactComponentElement<typeof LocalDataSource>;
+            dataSource = {
+                data: localDataSource.props.data
+            }
+        }
     });
 
-    return {columnListColumnDefinitions, pageState, sortState, filterState};
+    return {columnListColumnDefinitions, pageState, sortState, filterState, dataSource};
 }
 
 export const Grid: React.FunctionComponent<GridProps> = (props) => {
-    const {columnListColumnDefinitions, pageState, sortState, filterState} = extractInformationFromGridChildren(props.children);
-    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(props.dataRows).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
+    const {columnListColumnDefinitions, pageState, sortState, filterState, dataSource} = extractInformationFromGridChildren(props.children);
+
+    let getData = (dataSource: DataSourceDefinition) : any[] => {
+        return dataSource.data;
+    }
+
+    let data = getData(dataSource);
+
+    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(data).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 
     return (
         <table>
@@ -79,14 +93,14 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 filterState={filterState}
             />
             <DataBody
-                dataItems={props.dataRows}
+                dataItems={data}
                 columnDefinitions={columnDefinitions}
             />
             {pageState != null ? (
                 <PagerFooter 
                     columnDefinitions={columnDefinitions}
                     pageState={pageState}
-                    dataRows={props.dataRows}
+                    dataRows={data}
                 />
             ) : null}
         </table>

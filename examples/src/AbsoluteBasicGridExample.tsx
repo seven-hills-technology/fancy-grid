@@ -8,7 +8,9 @@ export const code = `function AbsoluteBasicGridExample() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        <FancyGrid.Grid dataRows={dataRows} />
+        <FancyGrid.Grid>
+            <FancyGrid.LocalDataSource data={dataRows} />
+        </FancyGrid.Grid>
     )
 }`
 
@@ -19,6 +21,8 @@ export function AbsoluteBasicGridExample() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        <FancyGrid.Grid dataRows={dataRows} />
+        <FancyGrid.Grid>
+            <FancyGrid.LocalDataSource data={dataRows} />
+        </FancyGrid.Grid>
     )
 }

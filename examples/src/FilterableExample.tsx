@@ -37,7 +37,7 @@ export function FilterableExample() {
     const dataRows = applyFilter(usStates.data, filterState);
     
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -47,6 +47,7 @@ export function FilterableExample() {
                     title="Abbreviation"/>
             </FancyGrid.ColumnList>
             <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }`
@@ -85,7 +86,7 @@ export function FilterableExample() {
     const dataRows = applyFilter(usStates.data, filterState);
     
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -95,6 +96,7 @@ export function FilterableExample() {
                     title="Abbreviation"/>
             </FancyGrid.ColumnList>
             <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }
