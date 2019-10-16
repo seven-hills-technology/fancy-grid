@@ -100,7 +100,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 <PagerFooter 
                     columnDefinitions={columnDefinitions}
                     pageState={pageState}
-                    dataRows={data}
+                    visibleDataRows={data.length}
                 />
             ) : null}
         </table>
