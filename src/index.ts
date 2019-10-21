@@ -9,3 +9,4 @@ export {Pager} from './public-components/Pager';
 export {Sortable} from './public-components/Sortable';
 export {Filterable} from './public-components/Filterable';
 export {LocalDataSource} from './public-components/LocalDataSource';
+export { RemoteDataSource } from './public-components/RemoteDataSource';

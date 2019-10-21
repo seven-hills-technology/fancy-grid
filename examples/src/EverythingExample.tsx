@@ -6,10 +6,6 @@ import usStates from './states.json';
 interface DataState {
     data: any[];
     total: number;
-    filterState: FancyGrid.FilterCollection;
-    sortState: FancyGrid.SortCollection;
-    pageNum: number;
-    pageSize: number;
 }
 
 export const code = `function applyFilter(dataRows: any[], filters: FancyGrid.FilterCollection) {
@@ -107,43 +103,25 @@ function applySort(dataRows: any[], sorts: FancyGrid.SortCollection) {
     })
 }
 
-async function getNewData(filterState: FancyGrid.FilterCollection, sortState: FancyGrid.SortCollection, pageNum: number, pageSize: number): Promise<DataState> {
+async function fetchData(filterState: FancyGrid.FilterCollection, sortState: FancyGrid.SortCollection, pageNum: number, pageSize: number): Promise<DataState> {
+    console.log()
     const filteredDataRows = applyFilter(usStates.data, filterState);
     const sortedDataRows = applySort(filteredDataRows, sortState);
     const currentPage = sortedDataRows.slice(pageNum * pageSize, (pageNum + 1) * pageSize);
 
     return {
         data: currentPage,
-        total: filteredDataRows.length,
-        filterState,
-        sortState,
-        pageNum,
-        pageSize
+        total: filteredDataRows.length
     }
 }
 
 export function EverythingExample() {
-    const [dataState, setDataState] = useState({data: [], total: 0, filterState: [], sortState: [], pageNum: 0, pageSize: 0} as DataState | null);
+    const [dataState, setDataState] = useState({data: [], total: 0} as DataState | null);
     const [pageNum, setPageNum] = useState(0);
     const [pageSize, setPageSize] = useState(20);
     const [numPages, setNumPages] = useState(0);
     const [filterState, setFilterState] = useState([] as FancyGrid.FilterCollection);
     const [sortState, setSortState] = useState([] as FancyGrid.SortCollection);
-
-    async function updateData() {
-        const newDataState = await getNewData(filterState, sortState, pageNum, pageSize);
-        setDataState(newDataState);
-        const newNumPages = Math.ceil(newDataState.total / pageSize);
-        if (newNumPages !== numPages) {
-            setNumPages(newNumPages);
-        }
-    }
-
-    useEffect(() => {
-        if (dataState == null || dataState.filterState !== filterState || dataState.sortState !== sortState || dataState.pageNum !== pageNum || dataState.pageSize !== pageSize) {
-            updateData();
-        };
-    })
 
     const onPageSizeChange = (newPageSize: number, oldPageSize: number) => {
         const currentPage = pageNum;
@@ -170,8 +148,8 @@ export function EverythingExample() {
                 sort={sortState}
                 onSortChange={setSortState}
             />
-            <FancyGrid.LocalDataSource
-                data={dataState!.data}
+            <FancyGrid.RemoteDataSource
+                fetchData={fetchData}
             />
             <FancyGrid.Pager
                 count={dataState!.total}

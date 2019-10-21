@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState, useCallback, useMemo } from 'react';
 import { ColumnList, getColumnDefinitionsFromColumnListComponent } from './ColumnList';
 import { ColumnDefinition } from '../models/columnDefinition';
 import { PageState } from '../models/pageState';
@@ -12,6 +12,8 @@ import { ColumnHeader } from '../internal-components/ColumnHeader';
 import { PagerFooter } from '../internal-components/PagerFooter';
 import { LocalDataSource } from './LocalDataSource';
 import { DataSourceDefinition } from '../models/dataSourceDefinition';
+import { DataResult } from '../models/dataResult';
+import { RemoteDataSource } from './RemoteDataSource';
 
 export interface GridProps { }
 
@@ -24,14 +26,14 @@ function extractInformationFromGridChildren(children: ReactNode): {
     pageState: PageState | null,
     sortState: SortState | null,
     filterState: FilterState | null,
-    dataSource: DataSourceDefinition
+    dataSource: DataSourceDefinition | null
 } {
 
     let columnListColumnDefinitions: ColumnDefinition[] | null = null;
     let pageState: PageState | null = null;
     let sortState: SortState | null = null;
     let filterState: FilterState | null = null;
-    let dataSource: DataSourceDefinition = {data: []};
+    let dataSource: DataSourceDefinition | null = null;
 
     React.Children.forEach(children, child => {
         if (!React.isValidElement(child)) {
@@ -43,30 +45,30 @@ function extractInformationFromGridChildren(children: ReactNode): {
             columnListColumnDefinitions = getColumnDefinitionsFromColumnListComponent(columnList);
         } else if (child.type === Pager) {
             const pager = child as React.ReactComponentElement<typeof Pager>;
-            pageState = {
-                count: pager.props.count,
-                page: pager.props.page,
-                numPages: pager.props.numPages,
-                onPageChange: pager.props.onPageChange,
-                pageSize: pager.props.pageSize,
-                onPageSizeChange: pager.props.onPageSizeChange
-            }
+            pageState = pager.props;
         } else if (child.type === Sortable) {
             const sortable = child as React.ReactComponentElement<typeof Sortable>;
-            sortState = {
-                sort: sortable.props.sort || [],
-                onSortChange: sortable.props.onSortChange
-            };
+            // sortState = {
+            //     sort: sortable.props.sort || [],
+            //     onSortChange: sortable.props.onSortChange
+            // };
+            sortState = sortable.props;
         } else if (child.type === Filterable) {
             const filterable = child as React.ReactComponentElement<typeof Filterable>;
-            filterState = {
-                filter: filterable.props.filter || [],
-                onFilterChange: filterable.props.onFilterChange
-            };
+            // filterState = {
+            //     filter: filterable.props.filter || [],
+            //     onFilterChange: filterable.props.onFilterChange
+            // };
+            filterState = filterable.props;
         } else if (child.type === LocalDataSource) {
             const localDataSource = child as React.ReactComponentElement<typeof LocalDataSource>;
             dataSource = {
                 data: localDataSource.props.data
+            }
+        }else if (child.type === RemoteDataSource) {
+            const remoteDataSource = child as React.ReactComponentElement<typeof RemoteDataSource>;
+            dataSource = {
+                fetchData: remoteDataSource.props.fetchData
             }
         }
     });
@@ -75,15 +77,37 @@ function extractInformationFromGridChildren(children: ReactNode): {
 }
 
 export const Grid: React.FunctionComponent<GridProps> = (props) => {
+    console.log("Grid render");
+    const [dataResult, setDataResult] = useState({data: [], total: 0} as DataResult);
+
     const {columnListColumnDefinitions, pageState, sortState, filterState, dataSource} = extractInformationFromGridChildren(props.children);
 
-    let getData = (dataSource: DataSourceDefinition) : any[] => {
-        return dataSource.data;
+    const updateDataResultAsync = async () => {
+        console.log("updateDataResultAsync");
+        if (dataSource == null) {
+            throw new Error("broke");
+        } if (dataSource.data != null) {
+            console.log("dataSource.data", dataSource.data);
+            return {data: dataSource.data, total: pageState != null ? pageState.count : 0};
+        } else if (dataSource.fetchData != null) {
+            console.log("dataSource.fetchData", dataSource.fetchData);
+            return await dataSource.fetchData(filterState!.filter, sortState!.sort, pageState!.page, pageState!.pageSize)
+        } else {
+            throw new Error("broke");
+        }
     }
+    
+    const dataResultPromise = useMemo(() => updateDataResultAsync(), [filterState, sortState, pageState]);
+    dataResultPromise
+        .then(newDataResult => {
+            console.log(newDataResult);
+            if (newDataResult !== dataResult && (newDataResult.data !== dataResult.data || newDataResult.total !== dataResult.total)) {
+                setDataResult(newDataResult);
+            }
+        })
+    console.log(dataResultPromise);
 
-    let data = getData(dataSource);
-
-    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(data).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
+    const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(dataResult.data).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 
     return (
         <table>
@@ -93,14 +117,15 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 filterState={filterState}
             />
             <DataBody
-                dataItems={data}
+                dataItems={dataResult.data}
                 columnDefinitions={columnDefinitions}
             />
             {pageState != null ? (
                 <PagerFooter 
                     columnDefinitions={columnDefinitions}
                     pageState={pageState}
-                    visibleDataRows={data.length}
+                    visibleDataRows={dataResult.data.length}
+                    total={dataResult.total}
                 />
             ) : null}
         </table>

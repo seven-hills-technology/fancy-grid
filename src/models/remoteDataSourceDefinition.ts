@@ -1,3 +1,5 @@
+import { FetchDataFunction } from './fetchDataFunction';
+
 export interface RemoteDataSourceDefinition {
-    data: any[];
+    fetchData: FetchDataFunction
 }

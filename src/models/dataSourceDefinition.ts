@@ -1,3 +1,6 @@
+import { FetchDataFunction } from './fetchDataFunction';
+
 export interface DataSourceDefinition {
-    data: any[];
+    data?: any[];
+    fetchData?: FetchDataFunction;
 }
