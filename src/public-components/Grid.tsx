@@ -48,17 +48,9 @@ function extractInformationFromGridChildren(children: ReactNode): {
             pageState = pager.props;
         } else if (child.type === Sortable) {
             const sortable = child as React.ReactComponentElement<typeof Sortable>;
-            // sortState = {
-            //     sort: sortable.props.sort || [],
-            //     onSortChange: sortable.props.onSortChange
-            // };
             sortState = sortable.props;
         } else if (child.type === Filterable) {
             const filterable = child as React.ReactComponentElement<typeof Filterable>;
-            // filterState = {
-            //     filter: filterable.props.filter || [],
-            //     onFilterChange: filterable.props.onFilterChange
-            // };
             filterState = filterable.props;
         } else if (child.type === LocalDataSource) {
             const localDataSource = child as React.ReactComponentElement<typeof LocalDataSource>;
@@ -77,20 +69,16 @@ function extractInformationFromGridChildren(children: ReactNode): {
 }
 
 export const Grid: React.FunctionComponent<GridProps> = (props) => {
-    console.log("Grid render");
     const [dataResult, setDataResult] = useState({data: [], total: 0} as DataResult);
 
     const {columnListColumnDefinitions, pageState, sortState, filterState, dataSource} = extractInformationFromGridChildren(props.children);
 
     const updateDataResultAsync = async () => {
-        console.log("updateDataResultAsync");
         if (dataSource == null) {
             throw new Error("broke");
         } if (dataSource.data != null) {
-            console.log("dataSource.data", dataSource.data);
             return {data: dataSource.data, total: pageState != null ? pageState.count : 0};
         } else if (dataSource.fetchData != null) {
-            console.log("dataSource.fetchData", dataSource.fetchData);
             return await dataSource.fetchData(filterState!.filter, sortState!.sort, pageState!.page, pageState!.pageSize)
         } else {
             throw new Error("broke");
@@ -100,12 +88,10 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
     const dataResultPromise = useMemo(() => updateDataResultAsync(), [filterState, sortState, pageState]);
     dataResultPromise
         .then(newDataResult => {
-            console.log(newDataResult);
             if (newDataResult !== dataResult && (newDataResult.data !== dataResult.data || newDataResult.total !== dataResult.total)) {
                 setDataResult(newDataResult);
             }
         })
-    console.log(dataResultPromise);
 
     const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(dataResult.data).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 

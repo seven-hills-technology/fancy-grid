@@ -104,7 +104,6 @@ function applySort(dataRows: any[], sorts: FancyGrid.SortCollection) {
 }
 
 async function fetchData(filterState: FancyGrid.FilterCollection, sortState: FancyGrid.SortCollection, pageNum: number, pageSize: number): Promise<DataState> {
-    console.log()
     const filteredDataRows = applyFilter(usStates.data, filterState);
     const sortedDataRows = applySort(filteredDataRows, sortState);
     const currentPage = sortedDataRows.slice(pageNum * pageSize, (pageNum + 1) * pageSize);
@@ -132,6 +131,26 @@ export function EverythingExample() {
         setPageSize(newPageSize);
         setPageNum(newPageNum);
     };
+
+    const onFilterChange = (filterState: FancyGrid.FilterCollection) => {
+        setFilterState(filterState);
+        if (pageNum != 0) {
+            setPageNum(0);
+        }
+    }
+
+    const onFetchData = async (filterState: FancyGrid.FilterCollection, sortState: FancyGrid.SortCollection, pageNum: number, pageSize: number): Promise<DataState> => {
+        const result = await fetchData(filterState, sortState, pageNum, pageSize);
+        const newNumPages = Math.ceil(result.total / pageSize);
+
+        if (numPages != newNumPages) {
+            setNumPages(newNumPages);
+        } else if (dataState != null && result.total != dataState.total) {
+            setDataState(result);
+        }
+
+        return result;
+    }
     
     return (
         <FancyGrid.Grid>
@@ -143,13 +162,13 @@ export function EverythingExample() {
                     name="abbreviation"
                     title="Abbreviation"/>
             </FancyGrid.ColumnList>
-            <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
+            <FancyGrid.Filterable filter={filterState} onFilterChange={onFilterChange}/>
             <FancyGrid.Sortable
                 sort={sortState}
                 onSortChange={setSortState}
             />
             <FancyGrid.RemoteDataSource
-                fetchData={fetchData}
+                fetchData={onFetchData}
             />
             <FancyGrid.Pager
                 count={dataState!.total}

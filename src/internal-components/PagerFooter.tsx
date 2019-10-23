@@ -10,7 +10,6 @@ export interface ColumnHeaderRowProps {
 }
 
 export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props => {
-    console.log(props.pageState);
     const firstItemIndex = props.pageState.page * props.pageState.pageSize + 1;
     const lastItemIndex = firstItemIndex + props.visibleDataRows - 1;
 
