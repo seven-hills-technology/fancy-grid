@@ -98,11 +98,13 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
         matchedFilter = props.filterState.filter.find((f) => f.fieldName == props.columnDefinition.name)! || null;
     }
     return (
-        <th className="fancy-grid-column-header" onClick={() => props.sortState ? applySort(props.sortState!, props.columnDefinition) : null}>
-            {props.columnDefinition.title}
-            {props.sortState != null && props.sortState.sort != null && props.sortState.sort.length > 0 && props.sortState.sort[0].fieldName === props.columnDefinition.name ? (
-                props.sortState.sort[0].dir === 'desc' ? <span> (desc)</span> : <span> (asc)</span>
-            ) : null}
+        <th className="fancy-grid-column-header">
+            <div className="fancy-grid-column-header-text" onClick={() => props.sortState ? applySort(props.sortState!, props.columnDefinition) : null}>
+                {props.columnDefinition.title}
+                {props.sortState != null && props.sortState.sort != null && props.sortState.sort.length > 0 && props.sortState.sort[0].fieldName === props.columnDefinition.name ? (
+                    props.sortState.sort[0].dir === 'desc' ? <span> (desc)</span> : <span> (asc)</span>
+                ) : null}
+            </div>
             {props.filterState != null && props.filterState.onFilterChange != null ? (
                 <div className="fancy-grid-column-filter-container">
                     <input 
