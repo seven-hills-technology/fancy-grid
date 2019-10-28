@@ -114,6 +114,10 @@ async function fetchData(filterState: FancyGrid.FilterCollection, sortState: Fan
     }
 }
 
+async function rowClick(row: any, index: number) {
+    console.log(index);
+}
+
 export function EverythingExample() {
     const [dataState, setDataState] = useState({data: [], total: 0} as DataState | null);
     const [pageNum, setPageNum] = useState(0);
@@ -151,9 +155,13 @@ export function EverythingExample() {
 
         return result;
     }
+
+    const onRowClick = async (row: any, index: number) => {
+        await rowClick(row, index);
+    }
     
     return (
-        <FancyGrid.Grid>
+        <FancyGrid.Grid onRowClick={onRowClick}>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"

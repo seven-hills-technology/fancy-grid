@@ -6,10 +6,11 @@ import { DataCell } from './DataCell';
 export interface DataRowProps {
     dataItem: any;
     columnDefinitions: ColumnDefinition[];
+    onRowClick?: () => void;
 }
 
 export const DataRow: React.FunctionComponent<DataRowProps> = props => {
-    return <tr className="fancy-grid-body-row">
+    return <tr className={`fancy-grid-body-row ${props.onRowClick ? 'fancy-grid-body-row-clickable' : ''}`} onClick={() => { props.onRowClick ? props.onRowClick() : null}}>
         {props.columnDefinitions.map((columnDefinition, i) => (
             <DataCell
                 key={i}

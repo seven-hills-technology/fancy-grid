@@ -91,13 +91,6 @@ pre {
 .fancy-grid-body {
     display: flex;
     flex-direction: column;
-    .fancy-grid-body-row:nth-child(odd) {
-        background-color: rgba(0, 0, 0, 0.03);
-
-        &:hover {
-            background: rgba(0,0,0,0.05);
-        }
-    }
 }
 
 .fancy-grid-body-row {
@@ -106,6 +99,13 @@ pre {
     height: 45px;
     position: relative;
     line-height: 30px;
+
+    &:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+}
+
+.fancy-grid-body-row-clickable {
     cursor: pointer;
 
     &:hover {
