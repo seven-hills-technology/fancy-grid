@@ -144,7 +144,7 @@ pre {
     &::after {
         content: '\f078';
         font: normal normal normal 17px/1 FontAwesome;
-        color: #b2b2b2;
+        color: $color-disabled-placeholder;
         right: 33px;
         height: 33px;
         padding: 7px 0px 0px 8px;
@@ -170,6 +170,10 @@ pre {
 
 .fancy-grid-sortable {
     cursor: pointer;
+
+    &:hover {
+        color: gray;
+    }
 }
 
 .fancy-grid-column-header-text-container {
@@ -182,10 +186,6 @@ pre {
 
 .fancy-grid-column-header-text {
     flex: 1;
-
-    &:hover {
-        color: gray;
-    }
 
     &:focus-within {
         color: #4285c3;
@@ -259,7 +259,7 @@ pre {
     }
     padding: 5px 7px 5px 7px;
 
-    border-color: #b2b2b2;
+    border-color: $color-input-border;
     border-bottom-width: 1px !important;
     padding-bottom: 4.5px;
 }
@@ -271,7 +271,7 @@ pre {
     color: #757575;
     border-radius: 4px;
     border-style: solid;
-    border-color: #b2b2b2;
+    border-color: $color-input-border;
     border-width: 1px 1px 3px 1px;
     padding: 6px 16px 3px 16px;
     min-height: 40px;
@@ -289,11 +289,11 @@ pre {
     height: 40px;
     border-radius: 4px;
     border-style: solid;
-    border-color: #b2b2b2;
+    border-color: $color-input-border;
     border-width: 1px 1px 3px 1px;
     padding: 6px 16px 3px 16px;
     min-height: 40px;
-    background: rgba(0,0,0,0.3);
+    background: $color-input-border;
     cursor: pointer;
 }
 
@@ -306,7 +306,7 @@ pre {
     background-color: white;
     border-radius: 4px;
     border-style: solid;
-    border-color: #b2b2b2;
+    border-color: $color-input-border;
     border-width: 1px 1px 3px 1px;
     padding: 6px 16px 3px 16px;
     min-height: 40px;
@@ -316,7 +316,7 @@ pre {
     cursor: pointer;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.3);
+        background-color: $color-input-border;
         color: white;
     }
 }
