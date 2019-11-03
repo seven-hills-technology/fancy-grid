@@ -26,7 +26,7 @@ function SortableExample() {
     const dataRows = applySort(usStates, sortState);
     
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -41,6 +41,7 @@ function SortableExample() {
                 sort={sortState}
                 onSortChange={setSortState}
             />
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }`
@@ -68,7 +69,7 @@ export function SortableExample() {
     const dataRows = applySort(usStates.data, sortState);
     
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -83,6 +84,7 @@ export function SortableExample() {
                 sort={sortState}
                 onSortChange={setSortState}
             />
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }

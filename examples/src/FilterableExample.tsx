@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FancyGrid from '../../dist';
+import FancyGrid, { FilterType } from '../../dist';
 
 import usStates from './states.json';
 
@@ -37,7 +37,7 @@ export function FilterableExample() {
     const dataRows = applyFilter(usStates.data, filterState);
     
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -47,6 +47,7 @@ export function FilterableExample() {
                     title="Abbreviation"/>
             </FancyGrid.ColumnList>
             <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }`
@@ -68,11 +69,6 @@ function applyFilter(dataRows: any[], filters: FancyGrid.FilterCollection) {
                             return true;
                         }
                         break;
-                    default:
-                        if (String(xVal).startsWith(value.toLowerCase())) {
-                            return true;
-                        }
-                        break;
                 }
                 return false;
             });
@@ -85,7 +81,7 @@ export function FilterableExample() {
     const dataRows = applyFilter(usStates.data, filterState);
     
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -94,7 +90,8 @@ export function FilterableExample() {
                     name="abbreviation"
                     title="Abbreviation"/>
             </FancyGrid.ColumnList>
-            <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState}/>
+            <FancyGrid.Filterable filter={filterState} onFilterChange={setFilterState} defaultFilter={FilterType.StartsWith}/>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }

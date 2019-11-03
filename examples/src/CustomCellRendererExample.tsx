@@ -8,7 +8,7 @@ export const code = `function CustomCellRendererExample() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="a"
@@ -32,6 +32,7 @@ export const code = `function CustomCellRendererExample() {
                     </FancyGrid.CellRenderer>
                 </FancyGrid.Column>
             </FancyGrid.ColumnList>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }`
@@ -43,7 +44,7 @@ export function CustomCellRendererExample() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        <FancyGrid.Grid dataRows={dataRows} count={3}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="a"
@@ -67,6 +68,7 @@ export function CustomCellRendererExample() {
                     </FancyGrid.CellRenderer>
                 </FancyGrid.Column>
             </FancyGrid.ColumnList>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }

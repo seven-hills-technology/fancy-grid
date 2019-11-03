@@ -13,7 +13,7 @@ export interface ColumnHeaderRowProps {
 export const ColumnHeader: React.FunctionComponent<ColumnHeaderRowProps> = props => {
     return (
         <thead>
-            <tr>
+            <tr className="fancy-grid-column">
                 {props.columnDefinitions.map((columnDefinition, i) => (
                     <ColumnHeaderCell 
                         key={i} 

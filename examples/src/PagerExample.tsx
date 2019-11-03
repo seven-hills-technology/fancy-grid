@@ -24,7 +24,7 @@ export const code = `function PagerExample() {
     };
     
     return (
-        <FancyGrid.Grid dataRows={currentPage} count={usStates.count}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -36,12 +36,14 @@ export const code = `function PagerExample() {
                 />
             </FancyGrid.ColumnList>
             <FancyGrid.Pager
-                page={pageNum}
+                count={usStates.count}
                 numPages={numPages}
                 onPageChange={onPageChange}
-                pageSize={pageSizeNum}
                 onPageSizeChange={onPageSizeChange}
+                page={pageNum}
+                pageSize={pageSizeNum}
             />
+            <FancyGrid.LocalDataSource data={currentPage} />
         </FancyGrid.Grid>
     )
 }`
@@ -67,7 +69,7 @@ export function PagerExample() {
     };
     
     return (
-        <FancyGrid.Grid dataRows={currentPage} count={usStates.count}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="name"
@@ -79,12 +81,14 @@ export function PagerExample() {
                 />
             </FancyGrid.ColumnList>
             <FancyGrid.Pager
-                page={pageNum}
+                count={usStates.count}
                 numPages={numPages}
                 onPageChange={onPageChange}
-                pageSize={pageSizeNum}
                 onPageSizeChange={onPageSizeChange}
+                page={pageNum}
+                pageSize={pageSizeNum}
             />
+            <FancyGrid.LocalDataSource data={currentPage} />
         </FancyGrid.Grid>
     )
 }

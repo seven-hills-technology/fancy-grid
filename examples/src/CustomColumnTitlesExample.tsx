@@ -8,7 +8,7 @@ export const code = `function CustomColumnTitlesExample() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        <FancyGrid.Grid dataRows={dataRows}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="a"
@@ -27,6 +27,7 @@ export const code = `function CustomColumnTitlesExample() {
                     title="Column D">
                 </FancyGrid.Column>
             </FancyGrid.ColumnList>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }`
@@ -38,7 +39,7 @@ export function CustomColumnTitlesExample() {
         {a: 7, b: 8, c: 9, d: 10}
     ]
     return (
-        <FancyGrid.Grid dataRows={dataRows} count={3}>
+        <FancyGrid.Grid>
             <FancyGrid.ColumnList>
                 <FancyGrid.Column
                     name="a"
@@ -57,6 +58,7 @@ export function CustomColumnTitlesExample() {
                     title="Column D">
                 </FancyGrid.Column>
             </FancyGrid.ColumnList>
+            <FancyGrid.LocalDataSource data={dataRows} />
         </FancyGrid.Grid>
     )
 }

@@ -3,12 +3,13 @@ import { FilterType } from "./filterType";
 export interface FilterDefinition {
     fieldName: string;
     value: string;
-    filterType?: FilterType | string | null;
+    filterType: FilterType | null;
 }
 
 export type FilterCollection = FilterDefinition[];
 
 export interface FilterState {
     filter: FilterCollection;
+    defaultFilter?: FilterType;
     onFilterChange: (newFilter: FilterCollection) => void;
 }
