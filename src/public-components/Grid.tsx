@@ -15,7 +15,9 @@ import { DataSourceDefinition } from '../models/dataSourceDefinition';
 import { DataResult } from '../models/dataResult';
 import { RemoteDataSource } from './RemoteDataSource';
 
-export interface GridProps { }
+export interface GridProps {
+    onRowClick?: (row: any, index: number) => void;
+ }
 
 function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
     return [...new Set(([] as string[]).concat(...list.map(x => Object.keys(x))))];
@@ -105,6 +107,7 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
             <DataBody
                 dataItems={dataResult.data}
                 columnDefinitions={columnDefinitions}
+                onRowClick={props.onRowClick}
             />
             {pageState != null ? (
                 <PagerFooter 

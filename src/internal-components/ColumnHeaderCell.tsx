@@ -5,6 +5,7 @@ import { SortState, SortCollection } from '../models/sortState';
 import { FilterState, FilterCollection, FilterDefinition } from '../models/filterState';
 import { POINT_CONVERSION_COMPRESSED } from 'constants';
 import { FilterType } from '../models/filterType';
+import { FilterButton } from './FilterButton';
 
 
 function applySort(sortState: SortState, columnDefinition: ColumnDefinition) {
@@ -94,36 +95,34 @@ export interface ColumnHeaderCellProps {
 
 export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = props => {
     let matchedFilter: FilterDefinition | null = null;
-    if (props.filterState != null && props.filterState.onFilterChange != null) {
-        matchedFilter = props.filterState.filter.find((f) => f.fieldName == props.columnDefinition.name)! || null;
+    let filterable = props.filterState != null && props.filterState.onFilterChange != null;
+    let sortable = props.sortState != null && props.sortState.onSortChange != null;
+    if (filterable) {
+        matchedFilter = props.filterState!.filter.find((f) => f.fieldName == props.columnDefinition.name)! || null;
     }
+
+    let isSorting = props.sortState != null && props.sortState.sort != null && props.sortState.sort.length > 0 && props.sortState.sort[0].fieldName === props.columnDefinition.name;
+    let direction = isSorting ? props.sortState!.sort[0].dir : null;
+
     return (
         <th className="fancy-grid-column-header">
-            <div className="fancy-grid-column-header-text" onClick={() => props.sortState ? applySort(props.sortState!, props.columnDefinition) : null}>
-                {props.columnDefinition.title}
-                {props.sortState != null && props.sortState.sort != null && props.sortState.sort.length > 0 && props.sortState.sort[0].fieldName === props.columnDefinition.name ? (
-                    props.sortState.sort[0].dir === 'desc' ? <span> (desc)</span> : <span> (asc)</span>
-                ) : null}
+            <div className={`${'fancy-grid-column-header-text-container'} ${sortable ? 'fancy-grid-sortable' : ''}`} onClick={() => props.sortState ? applySort(props.sortState!, props.columnDefinition) : null}>
+                <span className={`fancy-grid-column-header-text ${isSorting && direction ? 'fancy-grid-column-header-text-sort-' + direction : ''}`}>{props.columnDefinition.title}</span>
             </div>
-            {props.filterState != null && props.filterState.onFilterChange != null ? (
+            {filterable ? (
                 <div className="fancy-grid-column-filter-container">
                     <input 
-                        className="fancy-grid-column-filter-input"
+                        className="fancy-grid-column-filter-input fancy-grid-input"
                         name={props.columnDefinition.name}
                         onChange={(event) => onFilterTextChanged(props.filterState!, props.columnDefinition, event.target.value)}
                         placeholder={props.columnDefinition.title}
                         type="text"
                         value={matchedFilter != null && matchedFilter.value != null ? matchedFilter.value : ''} />
-                    <select
-                        onChange={(event) => onFilterTypeChanged(props.filterState!, props.columnDefinition, event.target.value == '' || event.target.value == null ? null : event.target.value as FilterType)} 
-                        value={matchedFilter != null && matchedFilter.filterType != null ? matchedFilter.filterType : props.filterState.defaultFilter || FilterType.StartsWith}>
-                        {[FilterType.StartsWith, FilterType.Contains].map((filterType, i) => (
-                            <option key={i} value={filterType}>
-                                {filterType}
-                            </option>
-                        ))}
-                    </select> 
-                </div>
+                    <FilterButton 
+                        onChange={(filterType) => onFilterTypeChanged(props.filterState!, props.columnDefinition, filterType == '' || filterType == null ? null : filterType as FilterType)} 
+                        value={matchedFilter != null && matchedFilter.filterType != null ? matchedFilter.filterType : props.filterState!.defaultFilter || FilterType.StartsWith}
+                        filterTypes={[FilterType.StartsWith, FilterType.Contains]} />
+                    </div>
             ) : null}
         </th>
     )

@@ -5,6 +5,7 @@ import { DataRow } from './DataRow';
 export interface DataBodyProps {
     dataItems: any[];
     columnDefinitions: ColumnDefinition[];
+    onRowClick?: (row: any, index: number) => void;
 }
 
 export const DataBody: React.FunctionComponent<DataBodyProps> = props => {
@@ -14,6 +15,7 @@ export const DataBody: React.FunctionComponent<DataBodyProps> = props => {
                 key={i}
                 dataItem={dataItem}
                 columnDefinitions={props.columnDefinitions}
+                onRowClick={props.onRowClick != null ? () => props.onRowClick!(dataItem, i) : undefined}
             />
         ))}
     </tbody>

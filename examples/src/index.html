@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+            <!-- @import url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+            @import '~https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'; -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style type="text/css">
             html,body {
                 margin: 0;
@@ -39,11 +43,39 @@
 
             .fancy-grid-column-header {
                 flex: 1;
-                margin: 0 10px 0 10px;
             }
 
             .fancy-grid-column-filter-container {
                 display: flex;
+                height: 45px;
+                padding: 0 25px 0 25px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .fancy-grid-column-filter-container.dropdown {
+                flex: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .fancy-grid-column-filter-container.dropdown.button {
+                background: none;
+                padding: 0px;
+                border: none;
+                box-shadow: none !important;
+                background-color: transparent !important;
+                color: black;
+            }
+
+            .fancy-grid-column-filter-container.dropdown.dropdown-menu {
+                margin: 0px;
+            }
+
+
+            .fancy-grid-column-filter-container.dropdown.open button {
+                color: gray !important;
             }
 
             .fancy-grid-column-filter-input {
@@ -57,12 +89,11 @@
 
             .fancy-grid-body-row {
                 display: flex;
-                margin: 0 10px 0 10px;
             }
 
             .fancy-grid-body-cell {
                 flex: 1;
-                margin: 0 10px 0 10px;
+                padding: 0 25px 0 25px;
             }
 
             .fancy-grid-footer-row {
@@ -82,8 +113,56 @@
                 text-align: center;
             }
 
-            .fancy-grid-column-header-text {
+            .fancy-grid-sortable {
                 cursor: pointer;
+            }
+
+            .fancy-grid-column-header-text-container {
+                font-weight: lighter;
+                display: flex;
+                align-items: center;
+                height: 35px;
+            }
+
+            .fancy-grid-column-header-text {
+                flex: 1;
+                position: relative;
+                left: 50%;
+                transform: translate(-50%);
+            }
+
+            .fancy-grid-column-header-text-sort-asc {
+                flex: 1;
+                color: black;
+            }
+
+            .fancy-grid-column-header-text-sort-asc::after {
+                content: '';
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+                border-color: black transparent transparent;
+                border-style: solid;
+                border-width: 5px 5px 1.5px;
+                position: absolute;
+                bottom: 43%;
+                margin-left: 5px;
+            }
+
+            .fancy-grid-column-header-text-sort-desc {
+                flex: 1;
+                color: black;
+            }
+
+            .fancy-grid-column-header-text-sort-desc::after {
+                content: '';
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+                border-color: black transparent transparent;
+                border-style: solid;
+                border-width: 5px 5px 1.5px;
+                position: absolute;
+                bottom: 32%;
+                margin-left: 5px;
             }
         </style>
     </head>
