@@ -1,3 +1,5 @@
+import './styles/main.scss';
+
 export { SortCollection } from './models/sortState';
 export { FilterCollection } from './models/filterState';
 export { FilterType } from './models/filterType';
