@@ -105,7 +105,7 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
     let direction = isSorting ? props.sortState!.sort[0].dir : null;
 
     return (
-        <th className="fancy-grid-column-header">
+        <th className="fancy-grid-column-header" {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})}>
             <div className={`${'fancy-grid-column-header-text-container'} ${sortable ? 'fancy-grid-sortable' : ''}`} onClick={() => props.sortState ? applySort(props.sortState!, props.columnDefinition) : null}>
                 <span className={`fancy-grid-column-header-text ${isSorting && direction ? 'fancy-grid-column-header-text-sort-' + direction : ''}`}>{props.columnDefinition.title}</span>
             </div>

@@ -26,8 +26,7 @@ export function getColumnDefinitionFromColumnComponent(column: React.ReactCompon
     const cellRendererFunction = (cellRendererFunctions || []).filter(x => x != null)[0];
 
     return {
-        name: column.props.name,
-        title: column.props.title,
+        ...column.props,
         cellRenderer: cellRendererFunction
     };
 }
