@@ -9,6 +9,10 @@ import { FilterButton } from './FilterButton';
 
 
 function applySort(sortState: SortState, columnDefinition: ColumnDefinition) {
+    if (columnDefinition.name == null) {
+        return;
+    }
+
     if (sortState.sort.length > 0 && sortState.sort[0].fieldName === columnDefinition.name) {
         const dir = sortState.sort[0].dir === 'desc' ? 'asc' : 'desc';
         const newSort: SortCollection = [
@@ -30,6 +34,10 @@ function applySort(sortState: SortState, columnDefinition: ColumnDefinition) {
 }
 
 function onFilterTextChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterText: string) {
+    if (columnDefinition.name == null) {
+        return;
+    }
+
     let newFilter: FilterCollection = Object.assign([], filterState.filter);
     if (newFilter.length > 0) {
         const fieldNames: string[] = newFilter.map((x) => x.fieldName);
@@ -59,6 +67,10 @@ function onFilterTextChanged(filterState: FilterState, columnDefinition: ColumnD
 }
 
 function onFilterTypeChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterType: FilterType | null) {
+    if (columnDefinition.name == null) {
+        return;
+    }
+
     let newFilter: FilterCollection = Object.assign([], filterState.filter);
     if (newFilter.length > 0) {
         const fieldNames: string[] = newFilter.map((x) => x.fieldName);
@@ -96,7 +108,7 @@ export interface ColumnHeaderCellProps {
 export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = props => {
     let matchedFilter: FilterDefinition | null = null;
     let filterable = props.filterState != null && props.filterState.onFilterChange != null;
-    let sortable = props.sortState != null && props.sortState.onSortChange != null;
+    let sortable = props.columnDefinition.name != null && props.sortState != null && props.sortState.onSortChange != null;
     if (filterable) {
         matchedFilter = props.filterState!.filter.find((f) => f.fieldName == props.columnDefinition.name)! || null;
     }
