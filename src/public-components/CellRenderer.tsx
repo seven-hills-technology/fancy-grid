@@ -1,7 +1,8 @@
 import React from 'react';
+import { CellRendererFunction } from '../models/cellRendererFunction';
 
 export interface CellRendererProps {
-    children: (data: any) => JSX.Element;
+    children: CellRendererFunction;
 }
 
 export const CellRenderer: React.FunctionComponent<CellRendererProps> = () => {

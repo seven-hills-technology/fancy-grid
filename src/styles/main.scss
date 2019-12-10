@@ -15,6 +15,7 @@
     flex: 1;
     border-right: 1px solid rgba(0, 0, 0, 0.05);
     background-color: #eee;
+    overflow-x: hidden;
 
     &:last-child {
         border-right: none;
@@ -87,6 +88,7 @@
     padding: 10px 10px;
 
     border-right: 1px solid rgba(0, 0, 0, 0.05);
+    overflow-x: hidden;
 
     &:last-child {
         border-right: none;
@@ -139,7 +141,7 @@
     display: flex;
     align-items: center;
     text-align: center;
-    height: 35px;
+    min-height: 35px;
 }
 
 .fancy-grid-column-header-text {

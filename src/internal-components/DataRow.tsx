@@ -16,6 +16,7 @@ export const DataRow: React.FunctionComponent<DataRowProps> = props => {
                 key={i}
                 columnDefinition={columnDefinition}
                 cellValue={props.dataItem[columnDefinition.name]}
+                rowValue={props.dataItem}
                 cellRenderer={columnDefinition.cellRenderer}
             />
         ))}
