@@ -5,4 +5,6 @@ export interface ColumnDefinition {
     title?: string;
     cellRenderer?: CellRendererFunction | null;
     tdProps?: React.DetailedHTMLProps<React.TdHTMLAttributes<HTMLTableDataCellElement>, HTMLTableDataCellElement>;
+    sortable?: boolean;
+    filterable?: boolean;
 }

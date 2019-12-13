@@ -107,8 +107,8 @@ export interface ColumnHeaderCellProps {
 
 export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = props => {
     let matchedFilter: FilterDefinition | null = null;
-    let filterable = props.filterState != null && props.filterState.onFilterChange != null;
-    let sortable = props.columnDefinition.name != null && props.sortState != null && props.sortState.onSortChange != null;
+    let filterable = (props.columnDefinition.filterable == null || props.columnDefinition.filterable === true) && props.filterState != null && props.filterState.onFilterChange != null;
+    let sortable = (props.columnDefinition.sortable == null || props.columnDefinition.sortable === true) && props.columnDefinition.name != null && props.sortState != null && props.sortState.onSortChange != null;
     if (filterable) {
         matchedFilter = props.filterState!.filter.find((f) => f.fieldName == props.columnDefinition.name)! || null;
     }
