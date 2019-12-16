@@ -6,7 +6,9 @@ export const initialFancyGridState: FancyGridContainerState = {
         total: 0,
         pageNum: 0,
         pageSize: 10,
-        sort: []
+        sort: [],
+        filter: [],
+        isLoading: false
     },
     grids: {}
 }

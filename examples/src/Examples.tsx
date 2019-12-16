@@ -10,6 +10,7 @@ import { PagerExample, code as pagerExampleCode } from './PagerExample';
 import { SortableExample, code as sortableExampleCode } from './SortableExample';
 import { FilterableExample, code as filterableExample } from './FilterableExample';
 import { EverythingExample, code as everythingExampleCode } from './EverythingExample';
+import { ReduxExample, code as everythingReduxExample } from './ReduxExample';
 
 export function Examples() {
     return (
@@ -41,6 +42,10 @@ export function Examples() {
             <div className="example-container">
                 <SyntaxHighlighter language="jsx" style={theme}>{everythingExampleCode}</SyntaxHighlighter>
                 <EverythingExample />
+            </div>
+            <div className="example-container">
+                <SyntaxHighlighter language="jsx" style={theme}>{everythingReduxExample}</SyntaxHighlighter>
+                <ReduxExample />
             </div>
         </div>
     )

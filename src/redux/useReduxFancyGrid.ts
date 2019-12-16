@@ -1,3 +1,4 @@
+import { FilterCollection } from './../models/filterState';
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -7,19 +8,16 @@ import { GridState } from './state';
 import { FancyGridDataRetrievalFunction } from "./types";
 
 
-export type UseFancyGridReturnValue<T> = [T[], number, number, number, SortCollection, (newPageNum: number) => void, (newPageSize: number) => void, (newSort: SortCollection) => void];
+export type UseFancyGridReturnValue<T> = [T[], number, number, number, SortCollection, FilterCollection, (newPageNum: number) => void, (newPageSize: number) => void, (newSort: SortCollection) => void, (newFilter: FilterCollection) => void, boolean];
 
 
 export const useReduxFancyGrid = <T>(gridName: string, dataRetrievalFunction: FancyGridDataRetrievalFunction<T>, additionalTriggers?: any[], jsonDataSelector: (res: any) => T[] = res => res.data, jsonTotalSelector: (res: any) => number = res => res.total): UseFancyGridReturnValue<T> => {
     const dispatch = useDispatch();
-    // const dispatch = (...params: any[]) => {};
 
     const gridState = {
         ...useSelector<any, GridState<T>>(state => state.fancyGrid.defaultGridState),
         ...(useSelector<any, GridState<T>>(state => state.fancyGrid.grids[gridName]) ?? {})
     };
-
-    // const gridState: any = {};
 
     const setPageNum = (newPageNum: number) => {
         dispatch(actionCreators.setPageNum(gridName, newPageNum));
@@ -33,9 +31,13 @@ export const useReduxFancyGrid = <T>(gridName: string, dataRetrievalFunction: Fa
         dispatch(actionCreators.setSort(gridName, newSort));
     };
 
+    const setFilter = (newFilter: FilterCollection) => {
+        dispatch(actionCreators.setFilter(gridName, newFilter));
+    };
+
     useEffect(() => {
         dispatch(actionCreators.updateData(gridName, dataRetrievalFunction, jsonDataSelector, jsonTotalSelector));
-    }, [gridState.pageNum, gridState.pageSize, gridState.sort, ...(additionalTriggers ?? [])]);
+    }, [gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter, ...(additionalTriggers ?? [])]);
 
-    return [gridState.data, gridState.total, gridState.pageNum, gridState.pageSize, gridState.sort, setPageNum, setPageSize, setSort];
+    return [gridState.data, gridState.total, gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter, setPageNum, setPageSize, setSort, setFilter, gridState.isLoading];
 }

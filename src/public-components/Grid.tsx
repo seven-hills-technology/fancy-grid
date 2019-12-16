@@ -14,9 +14,11 @@ import { LocalDataSource } from './LocalDataSource';
 import { DataSourceDefinition } from '../models/dataSourceDefinition';
 import { DataResult } from '../models/dataResult';
 import { RemoteDataSource } from './RemoteDataSource';
+import { LoadingSpinner } from '../internal-components/loadingSpinner';
 
 export interface GridProps {
     onRowClick?: (row: any, index: number) => void;
+    isLoading?: boolean;
  }
 
 function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
@@ -98,26 +100,29 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
     const columnDefinitions = columnListColumnDefinitions || getAllFieldNamesFromListOfObjects(dataResult.data).map(x => ({name: x, title: x, cellRenderer: null, filter: []}));
 
     return (
-        <table className="fancy-grid">
-            <ColumnHeader
-                columnDefinitions={columnDefinitions}
-                sortState={sortState}
-                filterState={filterState}
-            />
-            <DataBody
-                dataItems={dataResult.data}
-                columnDefinitions={columnDefinitions}
-                onRowClick={props.onRowClick}
-            />
-            {pageState != null ? (
-                <PagerFooter 
+        <div style={{position: "relative"}}>
+            {props.isLoading ? <LoadingSpinner /> : null}
+            <table className="fancy-grid">
+                <ColumnHeader
                     columnDefinitions={columnDefinitions}
-                    pageState={pageState}
-                    visibleDataRows={dataResult.data.length}
-                    total={dataResult.total}
+                    sortState={sortState}
+                    filterState={filterState}
                 />
-            ) : null}
-        </table>
+                <DataBody
+                    dataItems={dataResult.data}
+                    columnDefinitions={columnDefinitions}
+                    onRowClick={props.onRowClick}
+                />
+                {pageState != null ? (
+                    <PagerFooter 
+                        columnDefinitions={columnDefinitions}
+                        pageState={pageState}
+                        visibleDataRows={dataResult.data.length}
+                        total={dataResult.total}
+                    />
+                ) : null}
+            </table>
+        </div>
     )
 }
 

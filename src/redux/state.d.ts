@@ -1,3 +1,4 @@
+import { FilterCollection } from './../models/filterState';
 import { SortCollection } from "..";
 
 export interface ReduxState {
@@ -15,6 +16,8 @@ export interface GridState<T> {
     pageNum: number;
     pageSize: number;
     sort: SortCollection;
+    filter: FilterCollection;
+    isLoading: boolean;
 }
 
 export interface GridDefinition<T> extends GridState<T> {

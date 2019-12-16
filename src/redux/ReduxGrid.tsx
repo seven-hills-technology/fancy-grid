@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 
-import { Grid, LocalDataSource, Sortable, Pager } from '..';
+import { Grid, LocalDataSource, Sortable, Pager, FilterCollection, Filterable } from '..';
 
 import { useReduxFancyGrid } from './useReduxFancyGrid';
 import { FancyGridDataRetrievalFunction } from './types';
+import { useSelector } from 'react-redux';
+import { ReduxState } from './state';
+import { ReduxFilterable } from './ReduxFilterable';
+import { ReduxSortable } from './ReduxSortable';
+import { ReduxPager } from './ReduxPager';
 
 export interface ReduxGridProps<T> {
     gridName: string;
@@ -12,30 +17,74 @@ export interface ReduxGridProps<T> {
     jsonDataSelector?: (res: any) => T[];
     jsonTotalSelector?: (res: any) => number;
     store?: any;
+    filterTimeout?: number;
 }
 
 export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => {
-    const [pobpcControllers, total, pageNum, pageSize, sort, setPageNum, setPageSize, setSort] = useReduxFancyGrid(props.gridName, props.dataRetrievalFunction, props.updateTriggers ?? [], props.jsonDataSelector, props.jsonTotalSelector);
+    const defaultFilter = useSelector<ReduxState, FilterCollection>(state => state.fancyGrid.defaultGridState.filter);
+    const [workingFilter, setWorkingFilter] = useState(defaultFilter)
+
+    const [data, total, pageNum, pageSize, sort, filter, setPageNum, setPageSize, setSort, setFilter, isLoading] = useReduxFancyGrid(props.gridName, props.dataRetrievalFunction, props.updateTriggers ?? [], props.jsonDataSelector, props.jsonTotalSelector);
     const numPages = Math.ceil((total ?? 0) / pageSize);
 
+    const updateFilterTimerRef = useRef(null as any);
+
+    const updateFilter = (newFilter: FilterCollection) => {
+        setWorkingFilter(newFilter);
+        if (updateFilterTimerRef.current != null) {
+            clearTimeout(updateFilterTimerRef.current);
+        }
+        updateFilterTimerRef.current = setTimeout(() => setFilter(workingFilter), props.filterTimeout ?? 1000);
+    }
+
+
+
+    let showFilterable = false;
+    let showSortable = false;
+    let showPager = false;
+
+    React.Children.forEach(props.children, child => {
+        if (!React.isValidElement(child)) {
+            return;
+        }
+
+        if (child.type === ReduxFilterable) {
+            showFilterable = true;
+        } else if (child.type === ReduxSortable) {
+            showSortable = true;
+        } else if (child.type === ReduxPager) {
+            showPager = true;
+        }
+    });
+
     return (
-        <Grid>
+        <Grid isLoading={isLoading}>
             {props.children}
             <LocalDataSource
-                data={pobpcControllers}
+                data={data}
             />
-            <Sortable
-                sort={sort}
-                onSortChange={setSort}
-            />
-            <Pager
-                count={total}
-                numPages={numPages}
-                onPageChange={setPageNum}
-                onPageSizeChange={setPageSize}
-                page={pageNum}
-                pageSize={pageSize}
-            />
+            {showFilterable ? (
+                <Filterable 
+                    filter={workingFilter} 
+                    onFilterChange={updateFilter}
+                />
+            ) : null}
+            {showSortable ? (
+                <Sortable
+                    sort={sort}
+                    onSortChange={setSort}
+                />
+            ) : null}
+            {showPager ? (
+                <Pager
+                    count={total}
+                    numPages={numPages}
+                    onPageChange={setPageNum}
+                    onPageSizeChange={setPageSize}
+                    page={pageNum}
+                    pageSize={pageSize}
+                />
+            ) : null}
         </Grid>
     )
 }

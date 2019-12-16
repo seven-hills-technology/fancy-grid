@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 
-import { SortCollection } from "..";
+import { SortCollection, FilterCollection } from "..";
 
 import { ActionsTypes } from "./actionTypes";
 import { FancyGridDataRetrievalFunction } from "./types";
@@ -23,7 +23,9 @@ export const actionCreators = {
             ...state.fancyGrid.grids[gridName]
         };
 
-        const res = await dataRetrievalFunction(gridState.pageNum, gridState.pageSize, gridState.sort);
+        await actionCreators.setIsLoading(gridName, true)(dispatch);
+        const res = await dataRetrievalFunction(gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter);
+        await actionCreators.setIsLoading(gridName, false)(dispatch);
         const data = jsonDataSelector(res);
         const total = jsonTotalSelector(res);
         dispatch({
@@ -61,5 +63,23 @@ export const actionCreators = {
                 sort
             }
         })
+    },
+    setFilter: (gridName: string, filter: FilterCollection) => async (dispatch: Dispatch<any>) => {
+        dispatch({
+            type: ActionsTypes.FANCY_GRID_SET_FILTER,
+            payload: {
+                gridName,
+                filter
+            }
+        })
+    },
+    setIsLoading: (gridName: string, isLoading: boolean) => async (dispatch: Dispatch<any>) => {
+        dispatch({
+            type: ActionsTypes.FANCY_GRID_SET_IS_LOADING,
+            payload: {
+                gridName,
+                isLoading
+            }
+        });
     }
 };

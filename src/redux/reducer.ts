@@ -1,4 +1,4 @@
-import { SortCollection } from '..';
+import { SortCollection, FilterCollection } from '..';
 
 import { ActionsTypes } from './actionTypes';
 import { initialFancyGridState } from './initialState';
@@ -77,6 +77,32 @@ export const fancyGridReducer = (state: any = initialFancyGridState, action: {ty
                     [gridName]: {
                         ...state.grids[gridName],
                         sort
+                    }
+                }
+            };
+        }
+        case ActionsTypes.FANCY_GRID_SET_FILTER: {
+            const {gridName, filter} = action.payload as {gridName: string, filter: FilterCollection};
+            return {
+                ...state,
+                grids: {
+                    ...state.grids,
+                    [gridName]: {
+                        ...state.grids[gridName],
+                        filter
+                    }
+                }
+            };
+        }
+        case ActionsTypes.FANCY_GRID_SET_IS_LOADING: {
+            const {gridName, isLoading} = action.payload as {gridName: string, isLoading: boolean};
+            return {
+                ...state,
+                grids: {
+                    ...state.grids,
+                    [gridName]: {
+                        ...state.grids[gridName],
+                        isLoading
                     }
                 }
             };
