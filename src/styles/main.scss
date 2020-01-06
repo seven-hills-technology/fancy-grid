@@ -107,25 +107,9 @@
     display: flex;
 }
 
-.fancy-grid-footer-pagesize {
-    flex: 2;
-    align-items: center;
-    display: flex;
-}
-
-.fancy-grid-footer-page-number {
+.fancy-grid-footer-text {
     padding: 10px;
-}
-
-.fancy-grid-footer-items-showing {
-    flex: 0 300px;
-    align-items: center;
-    display: flex;
-    text-align: center;
-}
-
-.fancy-grid-footer-items-count {
-    flex: 1;
+    display: inline-block
 }
 
 .fancy-grid-sortable {
