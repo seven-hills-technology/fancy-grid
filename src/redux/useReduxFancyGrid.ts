@@ -8,7 +8,7 @@ import { GridState } from './state';
 import { FancyGridDataRetrievalFunction } from "./types";
 
 
-export type UseFancyGridReturnValue<T> = [T[], number, number, number, SortCollection, FilterCollection, (newPageNum: number) => void, (newPageSize: number) => void, (newSort: SortCollection) => void, (newFilter: FilterCollection) => void, boolean];
+export type UseFancyGridReturnValue<T> = [T[], number, number, number, SortCollection, FilterCollection, (newPageNum: number) => void, (newPageSize: number) => void, (newSort: SortCollection) => void, (newFilter: FilterCollection) => void, () => void, boolean];
 
 
 export const useReduxFancyGrid = <T>(gridName: string, dataRetrievalFunction: FancyGridDataRetrievalFunction<T>, additionalTriggers?: any[], jsonDataSelector: (res: any) => T[] = res => res.data, jsonTotalSelector: (res: any) => number = res => res.total): UseFancyGridReturnValue<T> => {
@@ -35,9 +35,11 @@ export const useReduxFancyGrid = <T>(gridName: string, dataRetrievalFunction: Fa
         dispatch(actionCreators.setFilter(gridName, newFilter));
     };
 
-    useEffect(() => {
+    const updateData = () => {
         dispatch(actionCreators.updateData(gridName, dataRetrievalFunction, jsonDataSelector, jsonTotalSelector));
-    }, [gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter, ...(additionalTriggers ?? [])]);
+    };
 
-    return [gridState.data, gridState.total, gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter, setPageNum, setPageSize, setSort, setFilter, gridState.isLoading];
+    useEffect(updateData, [gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter, ...(additionalTriggers ?? [])]);
+
+    return [gridState.data, gridState.total, gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter, setPageNum, setPageSize, setSort, setFilter, updateData, gridState.isLoading];
 }

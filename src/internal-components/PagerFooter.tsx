@@ -42,6 +42,13 @@ export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props 
                         <div style={{flex: "0 0 160px"}}>
                             <div className="fancy-grid-footer-text">{`${firstItemIndex} - ${lastItemIndex} of ${total} items`}</div>
                         </div>
+                        {props.pageState.onRefresh != null ? (
+                            <div style={{flex: "0 0 50px"}}>
+                                <button className="fancy-grid-button fancy-grid-footer-button" onClick={props.pageState.onRefresh}>
+                                    <i className="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        ) : null}
                     </div>
                 </td>
             </tr>

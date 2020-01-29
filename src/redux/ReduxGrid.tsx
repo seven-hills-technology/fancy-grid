@@ -18,13 +18,16 @@ export interface ReduxGridProps<T> {
     jsonTotalSelector?: (res: any) => number;
     store?: any;
     filterTimeout?: number;
+    showRefreshButton?: boolean;
 }
 
 export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => {
+    const showRefreshButton = props.showRefreshButton ?? true;
+
     const defaultFilter = useSelector<ReduxState, FilterCollection>(state => state.fancyGrid.defaultGridState.filter);
     const [workingFilter, setWorkingFilter] = useState(defaultFilter)
 
-    const [data, total, pageNum, pageSize, sort, filter, setPageNum, setPageSize, setSort, setFilter, isLoading] = useReduxFancyGrid(props.gridName, props.dataRetrievalFunction, props.updateTriggers ?? [], props.jsonDataSelector, props.jsonTotalSelector);
+    const [data, total, pageNum, pageSize, sort, filter, setPageNum, setPageSize, setSort, setFilter, forceUpdateData, isLoading] = useReduxFancyGrid(props.gridName, props.dataRetrievalFunction, props.updateTriggers ?? [], props.jsonDataSelector, props.jsonTotalSelector);
     const numPages = Math.ceil((total ?? 0) / pageSize);
 
     const updateFilterTimerRef = useRef(null as any);
@@ -83,6 +86,7 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
                     onPageSizeChange={setPageSize}
                     page={pageNum}
                     pageSize={pageSize}
+                    onRefresh={showRefreshButton ? forceUpdateData : undefined}
                 />
             ) : null}
         </Grid>

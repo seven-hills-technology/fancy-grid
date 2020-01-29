@@ -5,4 +5,5 @@ export interface PageState {
     onPageChange: (newPage: number) => void;
     pageSize: number;
     onPageSizeChange: (newPageSize: number, oldPageSize: number) => void;
+    onRefresh?: () => void;
 }
