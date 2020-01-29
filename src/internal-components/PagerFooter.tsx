@@ -21,11 +21,11 @@ export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props 
                 <td colSpan={props.columnDefinitions.length}>
                     <div style={{width: "100%", display: "flex", flexDirection: "row"}}>
                         <div style={{flex: "0 0 160px"}}>
-                            <button className="fancy-grid-button" disabled={props.pageState.page <= 0} onClick={() => props.pageState.onPageChange(props.pageState.page - 1)}>
+                            <button className="fancy-grid-button fancy-grid-footer-button" disabled={props.pageState.page <= 0} onClick={() => props.pageState.onPageChange(props.pageState.page - 1)}>
                                 <i className="far fa-arrow-alt-circle-left"></i>
                             </button>
                             <span className="fancy-grid-footer-text">Page {props.pageState.page + 1}</span>
-                            <button className="fancy-grid-button" disabled={props.pageState.page >= (props.pageState.numPages - 1)} onClick={() => props.pageState.onPageChange(props.pageState.page + 1)}>
+                            <button className="fancy-grid-button fancy-grid-footer-button" disabled={props.pageState.page >= (props.pageState.numPages - 1)} onClick={() => props.pageState.onPageChange(props.pageState.page + 1)}>
                             <i className="far fa-arrow-alt-circle-right"></i>
                             </button>
                         </div>
