@@ -1,3 +1,7 @@
 import React from 'react';
 
-export const ReduxFilterable: React.FunctionComponent<{}> = () => null;
+export interface ReduxFilterableProps {
+    filterStyle?: "inline" | "popup"
+}
+
+export const ReduxFilterable: React.FunctionComponent<ReduxFilterableProps> = () => null;

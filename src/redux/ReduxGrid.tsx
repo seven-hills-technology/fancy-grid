@@ -6,7 +6,7 @@ import { useReduxFancyGrid } from './useReduxFancyGrid';
 import { FancyGridDataRetrievalFunction } from './types';
 import { useSelector } from 'react-redux';
 import { ReduxState } from './state';
-import { ReduxFilterable } from './ReduxFilterable';
+import {ReduxFilterable, ReduxFilterableProps} from './ReduxFilterable';
 import { ReduxSortable } from './ReduxSortable';
 import { ReduxPager } from './ReduxPager';
 import {IncludingReduxGridProps} from '../public-components/Grid';
@@ -44,6 +44,7 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
 
 
     let showFilterable = false;
+    let filterStyle: "inline" | "popup" | undefined = undefined;
     let showSortable = false;
     let showPager = false;
 
@@ -54,6 +55,7 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
 
         if (child.type === ReduxFilterable) {
             showFilterable = true;
+            filterStyle = (child.props as ReduxFilterableProps).filterStyle;
         } else if (child.type === ReduxSortable) {
             showSortable = true;
         } else if (child.type === ReduxPager) {
@@ -69,7 +71,8 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
             />
             {showFilterable ? (
                 <Filterable 
-                    filter={workingFilter} 
+                    filter={workingFilter}
+                    filterStyle={filterStyle}
                     onFilterChange={updateFilter}
                 />
             ) : null}
