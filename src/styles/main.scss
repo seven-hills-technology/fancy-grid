@@ -293,3 +293,7 @@
         color: $color-blue !important;
     }
 }
+
+.dropdown-toggle::after {
+    content: none!important;
+}
