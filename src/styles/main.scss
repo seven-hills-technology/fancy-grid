@@ -261,6 +261,10 @@
     &:hover {
         color: gray;
     }
+
+    &.filter-button-active {
+        color: steelblue;
+    }
 }
 
 .fancy-grid-filter-list {

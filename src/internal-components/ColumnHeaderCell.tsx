@@ -112,6 +112,7 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
     if (filterable) {
         matchedFilter = props.filterState!.filter.find((f) => f.fieldName == props.columnDefinition.name)! || null;
     }
+    const isFilterActive = matchedFilter?.value != null && matchedFilter?.value !== "";
 
     let isSorting = props.sortState != null && props.sortState.sort != null && props.sortState.sort.length > 0 && props.sortState.sort[0].fieldName === props.columnDefinition.name;
     let direction = isSorting ? props.sortState!.sort[0].dir : null;
@@ -130,7 +131,8 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
                         placeholder={props.columnDefinition.title}
                         type="text"
                         value={matchedFilter != null && matchedFilter.value != null ? matchedFilter.value : ''} />
-                    <FilterButton 
+                    <FilterButton
+                        isActive={isFilterActive}
                         onChange={(filterType) => onFilterTypeChanged(props.filterState!, props.columnDefinition, filterType == '' || filterType == null ? null : filterType as FilterType)} 
                         value={matchedFilter != null && matchedFilter.filterType != null ? matchedFilter.filterType : props.filterState!.defaultFilter || FilterType.StartsWith}
                         filterTypes={[FilterType.StartsWith, FilterType.Contains]} />
