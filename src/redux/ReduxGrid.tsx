@@ -9,8 +9,9 @@ import { ReduxState } from './state';
 import { ReduxFilterable } from './ReduxFilterable';
 import { ReduxSortable } from './ReduxSortable';
 import { ReduxPager } from './ReduxPager';
+import {IncludingReduxGridProps} from '../public-components/Grid';
 
-export interface ReduxGridProps<T> {
+export interface ReduxGridProps<T> extends IncludingReduxGridProps {
     gridName: string;
     dataRetrievalFunction: FancyGridDataRetrievalFunction<T>;
     updateTriggers?: any[];
@@ -61,7 +62,7 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
     });
 
     return (
-        <Grid isLoading={isLoading}>
+        <Grid isLoading={isLoading} {...props}>
             {props.children}
             <LocalDataSource
                 data={data}

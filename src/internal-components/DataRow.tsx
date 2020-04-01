@@ -10,7 +10,7 @@ export interface DataRowProps {
 }
 
 export const DataRow: React.FunctionComponent<DataRowProps> = props => {
-    return <tr className={`fancy-grid-body-row ${props.onRowClick ? 'fancy-grid-body-row-clickable' : ''}`} onClick={() => { props.onRowClick ? props.onRowClick() : null}}>
+    return <tr className={`${props.onRowClick ? 'fancy-grid-body-row-clickable' : ''}`} onClick={() => { props.onRowClick ? props.onRowClick() : null}}>
         {props.columnDefinitions.map((columnDefinition, i) => (
             <DataCell
                 key={i}

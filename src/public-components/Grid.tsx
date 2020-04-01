@@ -16,10 +16,15 @@ import { DataResult } from '../models/dataResult';
 import { RemoteDataSource } from './RemoteDataSource';
 import { LoadingSpinner } from '../internal-components/loadingSpinner';
 
-export interface GridProps {
-    onRowClick?: (row: any, index: number) => void;
+export interface NonReduxGridOnlyProps {
     isLoading?: boolean;
- }
+}
+
+export interface IncludingReduxGridProps {
+    onRowClick?: (row: any, index: number) => void;
+}
+
+export type GridProps = NonReduxGridOnlyProps & IncludingReduxGridProps;
 
 function getAllFieldNamesFromListOfObjects(list: any[]): string[] {
     return [...new Set(([] as string[]).concat(...list.map(x => Object.keys(x))))];
