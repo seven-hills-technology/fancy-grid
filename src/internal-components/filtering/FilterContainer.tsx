@@ -9,7 +9,7 @@ import {FilterState} from '../../models/filterState';
 
 
 
-function onFilterTextChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterText: string) {
+function onFilterTextChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterText: string, filterTimeout: number) {
     if (columnDefinition.name == null) {
         return;
     }
@@ -39,10 +39,10 @@ function onFilterTextChanged(filterState: FilterState, columnDefinition: ColumnD
             }
         ];
     }
-    filterState.onFilterChange!(newFilter);
+    filterState.onFilterChange!(newFilter, filterTimeout);
 }
 
-function onFilterTypeChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterType: FilterType | null) {
+function onFilterTypeChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterType: FilterType | null, filterTimeout: number) {
     if (columnDefinition.name == null) {
         return;
     }
@@ -72,7 +72,7 @@ function onFilterTypeChanged(filterState: FilterState, columnDefinition: ColumnD
             }
         ];
     }
-    filterState.onFilterChange!(newFilter);
+    filterState.onFilterChange!(newFilter, filterTimeout);
 }
 
 export interface FilterContainerProps {
@@ -88,8 +88,10 @@ export const FilterContainer: React.FunctionComponent<FilterContainerProps> = pr
     const selectedFilterType = matchedFilter?.filterType ?? props.filterState.defaultFilter ?? FilterType.StartsWith;
     const selectedValue = matchedFilter?.filterType != null ? matchedFilter.value : '';
 
+    const filterTimeout = props.filterStyle === "inline" ? 1000 : 0;
+
     function onSelectedFilterTypeChange(filterType: FilterType) {
-        onFilterTypeChanged(props.filterState, props.columnDefinition, filterType)
+        onFilterTypeChanged(props.filterState, props.columnDefinition, filterType, filterTimeout)
     }
 
     function onSelectedValueChange(value: string) {

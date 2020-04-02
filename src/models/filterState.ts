@@ -12,5 +12,5 @@ export interface FilterState {
     filter: FilterCollection;
     filterStyle?: "inline" | "popup";
     defaultFilter?: FilterType;
-    onFilterChange: (newFilter: FilterCollection) => void;
+    onFilterChange: (newFilter: FilterCollection, filterTimeout: number) => void;
 }

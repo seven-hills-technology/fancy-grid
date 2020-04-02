@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {FilterTypeDropdownButton} from './FilterTypeDropdownButton';
 import {FilterType} from '../../models/filterType';

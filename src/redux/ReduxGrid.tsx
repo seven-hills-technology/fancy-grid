@@ -18,7 +18,6 @@ export interface ReduxGridProps<T> extends IncludingReduxGridProps {
     jsonDataSelector?: (res: any) => T[];
     jsonTotalSelector?: (res: any) => number;
     store?: any;
-    filterTimeout?: number;
     showRefreshButton?: boolean;
 }
 
@@ -33,12 +32,12 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
 
     const updateFilterTimerRef = useRef(null as any);
 
-    const updateFilter = (newFilter: FilterCollection) => {
+    const updateFilter = (newFilter: FilterCollection, filterTimeout: number) => {
         setWorkingFilter(newFilter);
         if (updateFilterTimerRef.current != null) {
             clearTimeout(updateFilterTimerRef.current);
         }
-        updateFilterTimerRef.current = setTimeout(() => setFilter(newFilter), props.filterTimeout ?? 1000);
+        updateFilterTimerRef.current = setTimeout(() => setFilter(newFilter), filterTimeout);
     }
 
 
