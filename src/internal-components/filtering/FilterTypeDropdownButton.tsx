@@ -6,7 +6,7 @@ import {FilterType} from '../../models/filterType';
 export interface FilterTypeDropdownButtonProps {
     selectedFilterType: FilterType | null;
     filterTypes: FilterType[];
-    onChange: (filterType: string) => void;
+    onChange: (filterType: FilterType) => void;
 }
 
 export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdownButtonProps> = props => {
@@ -22,7 +22,7 @@ export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdow
             return(
                 <Dropdown.Item
                     key={i}
-                    onClick={() => props.onChange(filterType.toString())}
+                    onClick={() => props.onChange(filterType)}
                     className={`${props.selectedFilterType === filterType ? 'fancy-grid-filter-list-selected' : ''}`}
                     active={props.selectedFilterType === filterType}
                 >

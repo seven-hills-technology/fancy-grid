@@ -9,8 +9,8 @@ export interface InlineFilterContainerProps {
     fieldTitle: string;
     isActive: boolean;
     filterTypes: FilterType[];
-    selectedFilterType: FilterType | null;
-    onSelectedFilterTypeChange: (filterType: string) => void;
+    selectedFilterType: FilterType;
+    onSelectedFilterTypeChange: (filterType: FilterType) => void;
     selectedValue: string;
     onSelectedValueChange: (value: string) => void;
 }

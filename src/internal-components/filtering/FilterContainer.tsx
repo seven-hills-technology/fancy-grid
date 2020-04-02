@@ -88,12 +88,12 @@ export const FilterContainer: React.FunctionComponent<FilterContainerProps> = pr
     const selectedFilterType = matchedFilter?.filterType ?? props.filterState.defaultFilter ?? FilterType.StartsWith;
     const selectedValue = matchedFilter?.filterType != null ? matchedFilter.value : '';
 
-    function onSelectedFilterTypeChange(filterType: string) {
-        onFilterTypeChanged(props.filterState, props.columnDefinition, filterType == '' || filterType == null ? null : filterType as FilterType)
+    function onSelectedFilterTypeChange(filterType: FilterType) {
+        onFilterTypeChanged(props.filterState, props.columnDefinition, filterType)
     }
 
     function onSelectedValueChange(value: string) {
-        onFilterTextChanged(props.filterState!, props.columnDefinition, value)
+        onFilterTextChanged(props.filterState!, props.columnDefinition, value, filterTimeout)
     }
 
     const filterContainerProps = {
