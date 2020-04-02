@@ -82,6 +82,15 @@ export function ReduxExample() {
     
     return (
         <Provider store={store}>
+            <div className="form-inline">
+                <div className={"form-group"}>
+                    <label>Filter style:</label>
+                    <select className={"form-control"} value={filterStyle} onChange={e => setFilterStyle(e.target.value as 'inline' | 'popup')}>
+                        <option>inline</option>
+                        <option>popup</option>
+                    </select>
+                </div>
+            </div>
             <FancyGrid.ReduxGrid
                 gridName={"MyGrid123"}
                 dataRetrievalFunction={fetchData}
@@ -170,9 +179,20 @@ const store = createStore(
     applyMiddleware(thunk));
 
 export function ReduxExample() {
-    
+    const [filterStyle, setFilterStyle] = useState('inline' as 'inline' | 'popup');
+
+
     return (
         <Provider store={store}>
+            <div className="form-inline">
+                <div className={"form-group"}>
+                    <label>Filter style:</label>
+                    <select className={"form-control"} value={filterStyle} onChange={e => setFilterStyle(e.target.value as 'inline' | 'popup')}>
+                        <option>inline</option>
+                        <option>popup</option>
+                    </select>
+                </div>
+            </div>
             <FancyGrid.ReduxGrid
                 gridName={"MyGrid123"}
                 dataRetrievalFunction={fetchData}
@@ -185,7 +205,9 @@ export function ReduxExample() {
                         name="abbreviation"
                         title="Abbreviation"/>
                 </FancyGrid.ColumnList>
-                <FancyGrid.ReduxFilterable />
+                <FancyGrid.ReduxFilterable
+                    filterStyle={filterStyle}
+                />
                 <FancyGrid.ReduxSortable />
                 <FancyGrid.ReduxPager />
             </FancyGrid.ReduxGrid>
