@@ -7,6 +7,7 @@ export interface FilterTypeDropdownButtonProps {
     selectedFilterType: FilterType | null;
     filterTypes: FilterType[];
     onChange: (filterType: FilterType) => void;
+    showCaret?: boolean
 }
 
 export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdownButtonProps> = props => {
@@ -14,9 +15,10 @@ export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdow
 
     return (
         <DropdownButton
-            className="fancy-grid-filter-button-container"
             id={dropdownButtonId}
+            className={`${!props.showCaret ? "hide-caret": ""}`}
             title={props.children}
+            variant="secondary-outline"
         >
         {props.filterTypes.map((filterType, i) => {
             return(

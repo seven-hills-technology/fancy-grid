@@ -299,6 +299,6 @@
     }
 }
 
-.dropdown-toggle::after {
+.hide-caret .dropdown-toggle::after {
     content: none!important;
 }
