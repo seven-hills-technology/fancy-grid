@@ -261,6 +261,10 @@
     &:hover {
         color: gray;
     }
+
+    &.filter-button-active {
+        color: steelblue;
+    }
 }
 
 .fancy-grid-filter-list {
@@ -295,6 +299,6 @@
     }
 }
 
-.dropdown-toggle::after {
+.hide-caret .dropdown-toggle::after {
     content: none!important;
 }

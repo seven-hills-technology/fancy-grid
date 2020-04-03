@@ -9,6 +9,7 @@ import { CustomCellRendererExample, code as customCellRendererExampleCode } from
 import { PagerExample, code as pagerExampleCode } from './PagerExample';
 import { SortableExample, code as sortableExampleCode } from './SortableExample';
 import { FilterableExample, code as filterableExample } from './FilterableExample';
+import { FilterableWithPopupsExample, code as filterableWithPopupsExample } from './FilterableWithPopupsExample';
 import { EverythingExample, code as everythingExampleCode } from './EverythingExample';
 import { ReduxExample, code as everythingReduxExample } from './ReduxExample';
 
@@ -38,6 +39,10 @@ export function Examples() {
             <div className="example-container">
                 <SyntaxHighlighter language="jsx" style={theme}>{filterableExample}</SyntaxHighlighter>
                 <FilterableExample />
+            </div>
+            <div className="example-container">
+                <SyntaxHighlighter language="jsx" style={theme}>{filterableWithPopupsExample}</SyntaxHighlighter>
+                <FilterableWithPopupsExample />
             </div>
             <div className="example-container">
                 <SyntaxHighlighter language="jsx" style={theme}>{everythingExampleCode}</SyntaxHighlighter>

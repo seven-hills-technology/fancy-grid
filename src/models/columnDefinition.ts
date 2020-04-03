@@ -6,5 +6,5 @@ export interface ColumnDefinition {
     cellRenderer?: CellRendererFunction | null;
     tdProps?: React.DetailedHTMLProps<React.TdHTMLAttributes<HTMLTableDataCellElement>, HTMLTableDataCellElement>;
     sortable?: boolean;
-    filterable?: boolean;
+    filterable?: boolean | "inline" | "popup";
 }
