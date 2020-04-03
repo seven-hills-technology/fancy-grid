@@ -55,7 +55,6 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
     let isSorting = props.sortState != null && props.sortState.sort != null && props.sortState.sort.length > 0 && props.sortState.sort[0].fieldName === props.columnDefinition.name;
     let direction = isSorting ? props.sortState!.sort[0].dir : null;
 
-
     return (
         <th {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})}>
             <div className='fancy-grid-column-header-text-container'>
@@ -65,12 +64,22 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
                     {props.columnDefinition.title}
                 </span>
 
-                {filterStyle === "popup" ? (
-                    <FilterContainer filterStyle={"popup"} columnDefinition={props.columnDefinition} filterState={props.filterState!} />
+                {props.filterState != null && props.columnDefinition.name != null && filterStyle === "popup" ? (
+                    <FilterContainer
+                        fieldName={props.columnDefinition.name}
+                        fieldTitle={props.columnDefinition.title ?? ""}
+                        filterStyle={"popup"}
+                        filterState={props.filterState}
+                    />
                 ) : null}
             </div>
-            {filterStyle === "inline" ? (
-                <FilterContainer filterStyle={"inline"} columnDefinition={props.columnDefinition} filterState={props.filterState!} />
+            {props.filterState != null && props.columnDefinition.name != null && filterStyle === "inline" ? (
+                <FilterContainer
+                    fieldName={props.columnDefinition.name}
+                    fieldTitle={props.columnDefinition.title ?? ""}
+                    filterStyle={"inline"}
+                    filterState={props.filterState}
+                />
             ) : null}
         </th>
     )

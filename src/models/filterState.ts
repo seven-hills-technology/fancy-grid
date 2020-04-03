@@ -3,7 +3,7 @@ import { FilterType } from "./filterType";
 export interface FilterDefinition {
     fieldName: string;
     value: string;
-    filterType: FilterType | null;
+    filterType: FilterType;
 }
 
 export type FilterCollection = FilterDefinition[];

@@ -10,9 +10,8 @@ export interface InlineFilterContainerProps {
     isActive: boolean;
     filterTypes: FilterType[];
     selectedFilterType: FilterType;
-    onSelectedFilterTypeChange: (filterType: FilterType) => void;
     selectedValue: string;
-    onSelectedValueChange: (value: string) => void;
+    onFilterChange: (filterType: FilterType, value: string) => void;
 }
 
 export const InlineFilterContainer: React.FunctionComponent<InlineFilterContainerProps> = props => {
@@ -21,11 +20,11 @@ export const InlineFilterContainer: React.FunctionComponent<InlineFilterContaine
             <input
                 className="fancy-grid-column-filter-input fancy-grid-input"
                 name={props.fieldName}
-                onChange={(event) => props.onSelectedValueChange(event.target.value)}
+                onChange={(event) => props.onFilterChange(props.selectedFilterType, event.target.value)}
                 placeholder={props.fieldTitle}
                 type="text"
                 value={props.selectedValue} />
-            <FilterTypeDropdownButton selectedFilterType={props.selectedFilterType} filterTypes={props.filterTypes} onChange={props.onSelectedFilterTypeChange}>
+            <FilterTypeDropdownButton selectedFilterType={props.selectedFilterType} filterTypes={props.filterTypes} onChange={newFilterType => props.onFilterChange(newFilterType, props.selectedValue)}>
                 <div className={`filter-button ${props.isActive ? "filter-button-active" : ""}`}>
                     <i className={`${'filter-button-content'} fas fa-filter`} />
                 </div>

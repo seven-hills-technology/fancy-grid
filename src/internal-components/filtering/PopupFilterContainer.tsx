@@ -57,9 +57,8 @@ export interface PopupFilterContainerProps {
     isActive: boolean;
     filterTypes: FilterType[];
     selectedFilterType: FilterType;
-    onSelectedFilterTypeChange: (filterType: FilterType) => void;
     selectedValue: string;
-    onSelectedValueChange: (value: string) => void;
+    onFilterChange: (filterType: FilterType, value: string) => void;
 }
 
 export const PopupFilterContainer: React.FunctionComponent<PopupFilterContainerProps> = props => {
@@ -67,14 +66,12 @@ export const PopupFilterContainer: React.FunctionComponent<PopupFilterContainerP
     const [show, setShow] = useState(false);
 
     function submitFilter(filterType: FilterType, value: string) {
-        props.onSelectedFilterTypeChange(filterType);
-        props.onSelectedValueChange(value);
+        props.onFilterChange(filterType, value);
         setShow(false);
     }
 
     function clearFilter() {
-        props.onSelectedFilterTypeChange(FilterType.StartsWith);
-        props.onSelectedValueChange("");
+        props.onFilterChange(FilterType.StartsWith, "");
         setShow(false);
     }
 

@@ -7,106 +7,71 @@ import {PopupFilterContainer} from './PopupFilterContainer';
 import {ColumnDefinition} from '../../models/columnDefinition';
 import {FilterState} from '../../models/filterState';
 
+function updateFilterDefinition(fieldName: string, filterState: FilterState, filterType: FilterType, value: string, filterTimeout: number) {
+    const newFilter = [
+        ...(
+            // value.length === 0 ? (
+            //     // if value is empty, then instead of updating the matching filter definition, we need to remove it if it exists
+            //     filterState.filter.filter(x => x.fieldName !== fieldName)
+            // ) : (
+            //     // if value is not empty, then we need to update the matching filter definition if it exists
+                filterState.filter.map(oldFilterStateFilterDefinition => oldFilterStateFilterDefinition.fieldName === fieldName ? (
+                    {
+                        fieldName,
+                        filterType,
+                        value
+                    }
+                ) : oldFilterStateFilterDefinition)
+            // )
+        ),
+        ...(
+            // value.length === 0 ? (
+            //     // if value is empty, then there's no case where we'd want to create a new filter definition
+            //     []
+            // ) : (
+                // if value is not empty, then we need to create the filter definition if it doesn't already exist
+                filterState.filter.find(x => x.fieldName === fieldName) == null ? [
+                    {
+                        fieldName,
+                        filterType,
+                        value
+                    }
+                ] : []
+            // )
+        )
+    ];
 
-
-function onFilterTextChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterText: string, filterTimeout: number) {
-    if (columnDefinition.name == null) {
-        return;
-    }
-
-    let newFilter: FilterCollection = Object.assign([], filterState.filter);
-    if (newFilter.length > 0) {
-        const fieldNames: string[] = newFilter.map((x) => x.fieldName);
-        //Check to see if there's a field that matches the filter already
-        if (fieldNames.includes(columnDefinition.name)) {
-            const index = fieldNames.indexOf(columnDefinition.name);
-            newFilter[index].value = filterText;
-        } else {
-            //If not, add it
-            newFilter.push({
-                fieldName: columnDefinition.name,
-                value: filterText,
-                filterType: filterState.defaultFilter || FilterType.StartsWith
-            });
-        }
-    } else {
-        //If adding a filter but no filters exist
-        newFilter = [
-            {
-                fieldName: columnDefinition.name,
-                value: filterText,
-                filterType: filterState.defaultFilter || FilterType.StartsWith
-            }
-        ];
-    }
-    filterState.onFilterChange!(newFilter, filterTimeout);
-}
-
-function onFilterTypeChanged(filterState: FilterState, columnDefinition: ColumnDefinition, filterType: FilterType | null, filterTimeout: number) {
-    if (columnDefinition.name == null) {
-        return;
-    }
-
-    let newFilter: FilterCollection = Object.assign([], filterState.filter);
-    if (newFilter.length > 0) {
-        const fieldNames: string[] = newFilter.map((x) => x.fieldName);
-        //Check to see if there's a field that matches the filter already
-        if (fieldNames.includes(columnDefinition.name)) {
-            const index = fieldNames.indexOf(columnDefinition.name);
-            newFilter[index].filterType = filterType;
-        } else {
-            //If not, add it
-            newFilter.push({
-                fieldName: columnDefinition.name,
-                value: '',
-                filterType: filterType
-            });
-        }
-    } else {
-        //If adding a filter but no filters exist
-        newFilter = [
-            {
-                fieldName: columnDefinition.name,
-                value: '',
-                filterType: filterType
-            }
-        ];
-    }
-    filterState.onFilterChange!(newFilter, filterTimeout);
+    filterState.onFilterChange(newFilter, filterTimeout);
 }
 
 export interface FilterContainerProps {
     filterStyle: "popup" | "inline";
-    columnDefinition: ColumnDefinition;
     filterState: FilterState;
+    fieldName: string;
+    fieldTitle: string;
 }
 
 export const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-    const matchedFilter = props.filterState!.filter.find((f) => f.fieldName == props.columnDefinition.name);
-    const isFilterActive = matchedFilter?.value != null && matchedFilter?.value !== "";
+    const matchedFilter = props.filterState.filter.find((f) => f.fieldName == props.fieldName);
+    const isFilterActive = matchedFilter != null && matchedFilter.value.length > 0;
 
     const selectedFilterType = matchedFilter?.filterType ?? props.filterState.defaultFilter ?? FilterType.StartsWith;
-    const selectedValue = matchedFilter?.filterType != null ? matchedFilter.value : '';
+    const selectedValue = matchedFilter?.value ?? '';
 
     const filterTimeout = props.filterStyle === "inline" ? 1000 : 0;
 
-    function onSelectedFilterTypeChange(filterType: FilterType) {
-        onFilterTypeChanged(props.filterState, props.columnDefinition, filterType, filterTimeout)
-    }
-
-    function onSelectedValueChange(value: string) {
-        onFilterTextChanged(props.filterState!, props.columnDefinition, value, filterTimeout)
+    function onFilterChange(newFilterType: FilterType, newValue: string) {
+        updateFilterDefinition(props.fieldName, props.filterState, newFilterType, newValue, filterTimeout)
     }
 
     const filterContainerProps = {
-        fieldName: props.columnDefinition.name ?? '',
-        fieldTitle: props.columnDefinition.title ?? '',
+        fieldName: props.fieldName,
+        fieldTitle: props.fieldTitle,
         isActive: isFilterActive,
         filterTypes: [FilterType.StartsWith, FilterType.Contains],
         selectedFilterType,
-        onSelectedFilterTypeChange,
         selectedValue,
-        onSelectedValueChange
+        onFilterChange
     };
 
     return (

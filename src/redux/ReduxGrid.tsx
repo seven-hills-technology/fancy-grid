@@ -37,7 +37,7 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
         if (updateFilterTimerRef.current != null) {
             clearTimeout(updateFilterTimerRef.current);
         }
-        updateFilterTimerRef.current = setTimeout(() => setFilter(newFilter), filterTimeout);
+        updateFilterTimerRef.current = setTimeout(() => void setFilter(newFilter), filterTimeout);
     }
 
 
