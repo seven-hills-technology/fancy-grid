@@ -84,13 +84,13 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
 
     const updateDataResultAsync = async () => {
         if (dataSource == null) {
-            throw new Error("broke");
+            throw new Error("No data source was provided");
         } if (dataSource.data != null) {
             return {data: dataSource.data, total: pageState != null ? pageState.count : 0};
         } else if (dataSource.fetchData != null) {
             return await dataSource.fetchData(filterState!.filter, sortState!.sort, pageState!.page, pageState!.pageSize)
         } else {
-            throw new Error("broke");
+            throw new Error("Provided data source must have either 'data' or 'fetchData' populated");
         }
     }
     

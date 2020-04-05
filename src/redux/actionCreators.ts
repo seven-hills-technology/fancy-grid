@@ -28,6 +28,18 @@ export const actionCreators = {
         await actionCreators.setIsLoading(gridName, false)(dispatch);
         const data = jsonDataSelector(res);
         const total = jsonTotalSelector(res);
+
+        if (data == null || !Array.isArray(data) || total == null || !Number.isInteger(total)) {
+            const reasons = [
+                ...(data == null ? ["* data is null or undefined"] : []),
+                ...(data != null && !Array.isArray(data) ? ["* data is not an array"] : []),
+                ...(total == null ? ["* total is null or undefined"] : []),
+                ...(total != null && !Number.isInteger(total) ? ["* total is not an integer"] : [])
+            ];
+
+            throw new Error(`The response from the grid's data retrieval function could not be properly decoded:\n${reasons.join("\n")}`);
+        }
+
         dispatch({
             type: ActionsTypes.FANCY_GRID_SET_DATA,
             payload: {
