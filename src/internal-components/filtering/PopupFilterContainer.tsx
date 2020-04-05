@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {Button, Overlay, Popover} from 'react-bootstrap';
 
 import {FilterTypeDropdownButton} from './FilterTypeDropdownButton';
-import {FilterType} from '../../models/filterType';
+import {FilterType, FilterTypeDisplays} from '../../models/filterType';
 
 interface PopoverContainerProps {
     fieldName: string;
@@ -32,7 +32,7 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
                 <p>Show items with value that:</p>
                 <div style={{marginBottom: "1rem"}}>
                     <FilterTypeDropdownButton selectedFilterType={selectedFilterType} filterTypes={props.filterTypes} onChange={filterType => setSelectedFilterType(filterType as FilterType)} showCaret={true}>
-                        {selectedFilterType}
+                        {FilterTypeDisplays[selectedFilterType]}
                     </FilterTypeDropdownButton>
                 </div>
                 <input

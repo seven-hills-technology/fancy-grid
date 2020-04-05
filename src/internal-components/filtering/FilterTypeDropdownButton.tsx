@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {Dropdown, DropdownButton} from 'react-bootstrap';
 
-import {FilterType} from '../../models/filterType';
+import {FilterType, FilterTypeDisplays} from '../../models/filterType';
 
 export interface FilterTypeDropdownButtonProps {
     selectedFilterType: FilterType | null;
@@ -28,7 +28,7 @@ export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdow
                     className={`${props.selectedFilterType === filterType ? 'fancy-grid-filter-list-selected' : ''}`}
                     active={props.selectedFilterType === filterType}
                 >
-                    {filterType}
+                    {FilterTypeDisplays[filterType]}
                 </Dropdown.Item>
             )
         })}

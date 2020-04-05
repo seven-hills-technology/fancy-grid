@@ -1,4 +1,9 @@
 export enum FilterType {
-    StartsWith = 'Starts With',
-    Contains = 'Contains'
+    StartsWith = "StartsWith",
+    Contains = "Contains"
 }
+
+export const FilterTypeDisplays = {
+    [FilterType.StartsWith]: "Starts With",
+    [FilterType.Contains]: "Contains"
+};
