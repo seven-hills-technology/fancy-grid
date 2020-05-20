@@ -1,3 +1,8 @@
 import React from 'react';
+import {SortCollection} from '..';
 
-export const ReduxSortable: React.FunctionComponent<{}> = () => null;
+export interface ReduxSortableProps {
+    defaultSort?: SortCollection
+}
+
+export const ReduxSortable: React.FunctionComponent<ReduxSortableProps> = () => null;

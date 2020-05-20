@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 
-import { Grid, LocalDataSource, Sortable, Pager, FilterCollection, Filterable } from '..';
+import {Grid, LocalDataSource, Sortable, Pager, FilterCollection, Filterable, SortCollection} from '..';
 
 import { useReduxFancyGrid } from './useReduxFancyGrid';
 import { FancyGridDataRetrievalFunction } from './types';
 import { useSelector } from 'react-redux';
 import { ReduxState } from './state';
 import {ReduxFilterable, ReduxFilterableProps} from './ReduxFilterable';
-import { ReduxSortable } from './ReduxSortable';
+import {ReduxSortable, ReduxSortableProps} from './ReduxSortable';
 import { ReduxPager } from './ReduxPager';
 import {IncludingReduxGridProps} from '../public-components/Grid';
 
@@ -22,6 +22,29 @@ export interface ReduxGridProps<T> extends IncludingReduxGridProps {
 }
 
 export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => {
+    let showFilterable = false;
+    let filterStyle: "inline" | "popup" | undefined = undefined;
+    let showSortable = false;
+    let defaultSort: SortCollection | undefined = undefined;
+    let showPager = false;
+
+    React.Children.forEach(props.children, child => {
+        if (!React.isValidElement(child)) {
+            return;
+        }
+
+        if (child.type === ReduxFilterable) {
+            showFilterable = true;
+            filterStyle = (child.props as ReduxFilterableProps).filterStyle;
+        } else if (child.type === ReduxSortable) {
+            showSortable = true;
+            defaultSort = (child.props as ReduxSortableProps).defaultSort;
+        } else if (child.type === ReduxPager) {
+            showPager = true;
+        }
+    });
+
+
     const showRefreshButton = props.showRefreshButton ?? true;
 
     const defaultFilter = useSelector<ReduxState, FilterCollection>(state => state.fancyGrid.defaultGridState.filter);
@@ -40,27 +63,15 @@ export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => 
         updateFilterTimerRef.current = setTimeout(() => void setFilter(newFilter), filterTimeout);
     }
 
+    const [defaultSortInitialized, setDefaultSortInitialized] = useState(false);
 
-
-    let showFilterable = false;
-    let filterStyle: "inline" | "popup" | undefined = undefined;
-    let showSortable = false;
-    let showPager = false;
-
-    React.Children.forEach(props.children, child => {
-        if (!React.isValidElement(child)) {
-            return;
+    if (!defaultSortInitialized) {
+        if (defaultSort != null) {
+            setSort(defaultSort);
         }
+        setDefaultSortInitialized(true);
+    }
 
-        if (child.type === ReduxFilterable) {
-            showFilterable = true;
-            filterStyle = (child.props as ReduxFilterableProps).filterStyle;
-        } else if (child.type === ReduxSortable) {
-            showSortable = true;
-        } else if (child.type === ReduxPager) {
-            showPager = true;
-        }
-    });
 
     return (
         <Grid isLoading={isLoading} {...props}>
