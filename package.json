@@ -1,6 +1,6 @@
 {
   "name": "@sht-dev/fancy-grid",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A client-side grid that's FANCY",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

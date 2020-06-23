@@ -43,7 +43,7 @@ export const actionCreators = {
         const currentPageFirstDataItemIndex = gridState.pageNum * gridState.pageSize;
         const overallLastDataItemIndex = total - 1;
 
-        if (currentPageFirstDataItemIndex > overallLastDataItemIndex) {
+        if (!(total === 0 && gridState.pageNum === 0) && currentPageFirstDataItemIndex > overallLastDataItemIndex) {
             const lastPageNum = Math.max(Math.ceil(total / gridState.pageSize) - 1, 0);
             dispatch(actionCreators.setPageNum(gridName, lastPageNum));
             dispatch(actionCreators.updateData(gridName, dataRetrievalFunction, jsonDataSelector, jsonTotalSelector))
