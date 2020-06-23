@@ -40,14 +40,23 @@ export const actionCreators = {
             throw new Error(`The response from the grid's data retrieval function could not be properly decoded:\n${reasons.join("\n")}`);
         }
 
-        dispatch({
-            type: ActionsTypes.FANCY_GRID_SET_DATA,
-            payload: {
-                gridName,
-                data,
-                total
-            }
-        });
+        const currentPageFirstDataItemIndex = gridState.pageNum * gridState.pageSize;
+        const overallLastDataItemIndex = total - 1;
+
+        if (currentPageFirstDataItemIndex > overallLastDataItemIndex) {
+            const lastPageNum = Math.max(Math.ceil(total / gridState.pageSize) - 1, 0);
+            dispatch(actionCreators.setPageNum(gridName, lastPageNum));
+            dispatch(actionCreators.updateData(gridName, dataRetrievalFunction, jsonDataSelector, jsonTotalSelector))
+        } else {
+            dispatch({
+                type: ActionsTypes.FANCY_GRID_SET_DATA,
+                payload: {
+                    gridName,
+                    data,
+                    total
+                }
+            });
+        }
     },
     setPageNum: (gridName: string, pageNum: number) => async (dispatch: Dispatch<any>) => {
         dispatch({

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { ColumnDefinition } from '../models/columnDefinition';
 import { PageState } from '../models/pageState';
 
@@ -14,6 +14,10 @@ export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props 
     const lastItemIndex = firstItemIndex + props.visibleDataRows - 1;
 
     const total = props.total != null ? props.total : props.pageState.count;
+    const numPages = props.pageState.numPages;
+    const currentPage = props.pageState.page;
+
+    const currentPageDropdownOptions = useMemo(() => [...Array(Math.max(numPages, currentPage + 1)).keys()], [currentPage, numPages]);
 
     return (
         <tfoot>
@@ -24,7 +28,13 @@ export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props 
                             <button className="fancy-grid-button fancy-grid-footer-button" disabled={props.pageState.page <= 0} onClick={() => props.pageState.onPageChange(props.pageState.page - 1)}>
                                 <i className="far fa-arrow-alt-circle-left"></i>
                             </button>
-                            <span className="fancy-grid-footer-text">Page {props.pageState.page + 1}</span>
+                            <select className="fancy-grid-select" onChange={(event) => props.pageState.onPageChange(Number(event.target.value))} value={props.pageState.page} style={{height: "34px"}}>
+                                {currentPageDropdownOptions.map(pageNum => (
+                                    <option key={pageNum} value={pageNum}>
+                                        Page {pageNum+ 1}
+                                    </option>
+                                ))}
+                            </select>
                             <button className="fancy-grid-button fancy-grid-footer-button" disabled={props.pageState.page >= (props.pageState.numPages - 1)} onClick={() => props.pageState.onPageChange(props.pageState.page + 1)}>
                             <i className="far fa-arrow-alt-circle-right"></i>
                             </button>
