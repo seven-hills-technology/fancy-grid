@@ -3,23 +3,51 @@ import {Button, Overlay, Popover} from 'react-bootstrap';
 
 import {FilterTypeDropdownButton} from './FilterTypeDropdownButton';
 import {FilterType, FilterTypeDisplays} from '../../models/filterType';
+import {FilterDefinition} from '../../models/filterState';
 
 interface PopoverContainerProps {
+    filterDefinitions: FilterDefinition[];
     fieldName: string;
     fieldTitle: string;
-    initialSelectedFilterType: FilterType;
     filterTypes: FilterType[];
-    initialSelectedValue: string;
-    onSubmit: (selectedFilterType: FilterType, selectedValue: string) => void;
+    onSubmit: (filterDefinitions: FilterDefinition[]) => void;
     onClear: () => void;
 }
 
 const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props => {
-    const [selectedFilterType, setSelectedFilterType] = useState(props.initialSelectedFilterType);
-    const [selectedValue, setSelectedValue] = useState(props.initialSelectedValue);
+    const [filterDefinitions, setFilterDefinitions] = useState(props.filterDefinitions);
+
+    function addFilter() {
+        setFilterDefinitions([
+            ...filterDefinitions,
+            {
+                fieldName: props.fieldName,
+                filterType: props.filterTypes[0],
+                value: ""
+            }
+        ]);
+    }
+
+    function removeFilter(filterIndex: number) {
+        setFilterDefinitions(filterDefinitions.filter((_, i) => i !== filterIndex));
+    }
+
+    function setFilterType(index: number, filterType: FilterType) {
+        setFilterDefinitions(filterDefinitions.map((x, i) => i !== index ? x : {
+            ...x,
+            filterType
+        }));
+    }
+
+    function setValue(index: number, value: string) {
+        setFilterDefinitions(filterDefinitions.map((x, i) => i !== index ? x : {
+            ...x,
+            value
+        }));
+    }
 
     function submitFilter() {
-        props.onSubmit(selectedFilterType, selectedValue);
+        props.onSubmit(filterDefinitions);
     }
 
     function clearFilter() {
@@ -27,21 +55,39 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
     }
 
     return (
-        <Popover id="popover-basic">
+        <Popover id="popover-basic" style={{minWidth: "220px"}}>
             <Popover.Content>
                 <p>Show items with value that:</p>
-                <div style={{marginBottom: "1rem"}}>
-                    <FilterTypeDropdownButton selectedFilterType={selectedFilterType} filterTypes={props.filterTypes} onChange={filterType => setSelectedFilterType(filterType as FilterType)} showCaret={true}>
-                        {FilterTypeDisplays[selectedFilterType]}
-                    </FilterTypeDropdownButton>
+                {filterDefinitions.map((filterDefinition, i) => (
+                    <React.Fragment key={i}>
+                        <div style={{marginBottom: "1rem"}}>
+                            <FilterTypeDropdownButton
+                                selectedFilterType={filterDefinition.filterType}
+                                filterTypes={props.filterTypes}
+                                onChange={filterType => setFilterType(i, filterType as FilterType)}
+                                showCaret={true}
+                                style={{display: "inline-block"}}
+                            >
+                                {FilterTypeDisplays[filterDefinition.filterType]}
+                            </FilterTypeDropdownButton>
+                            <Button variant={'outline-secondary'} onClick={() => removeFilter(i)}>
+                                <i className="fas fa-times-circle" />
+                            </Button>
+                        </div>
+                        <input
+                            type="text"
+                            className="fancy-grid-column-filter-input fancy-grid-input"
+                            name={props.fieldName}
+                            placeholder={props.fieldTitle}
+                            onChange={(event) => setValue(i, event.target.value)}
+                            value={filterDefinition.value} />
+                    </React.Fragment>
+                ))}
+                <div style={{marginTop: "1rem"}}>
+                    <Button variant={'outline-secondary'} onClick={addFilter}>
+                        <i className="fas fa-plus-circle" />
+                    </Button>
                 </div>
-                <input
-                    type="text"
-                    className="fancy-grid-column-filter-input fancy-grid-input"
-                    name={props.fieldName}
-                    placeholder={props.fieldTitle}
-                    onChange={(event) => setSelectedValue(event.target.value)}
-                    value={selectedValue} />
                 <div style={{marginTop: "1rem"}}>
                     <Button variant={'outline-secondary'} onClick={submitFilter}>Filter</Button>
                     <Button variant={'outline-secondary'} onClick={clearFilter}>Clear</Button>
@@ -52,26 +98,25 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
 };
 
 export interface PopupFilterContainerProps {
+    filterDefinitions: FilterDefinition[];
     fieldName: string;
     fieldTitle: string;
     isActive: boolean;
     filterTypes: FilterType[];
-    selectedFilterType: FilterType;
-    selectedValue: string;
-    onFilterChange: (filterType: FilterType, value: string) => void;
+    onFilterChange: (filterDefinitions: FilterDefinition[]) => void;
 }
 
 export const PopupFilterContainer: React.FunctionComponent<PopupFilterContainerProps> = props => {
     const target = useRef<HTMLDivElement>(null);
     const [show, setShow] = useState(false);
 
-    function submitFilter(filterType: FilterType, value: string) {
-        props.onFilterChange(filterType, value);
+    function submitFilter(filterDefinitions: FilterDefinition[]) {
+        props.onFilterChange(filterDefinitions);
         setShow(false);
     }
 
     function clearFilter() {
-        props.onFilterChange(FilterType.StartsWith, "");
+        props.onFilterChange([]);
         setShow(false);
     }
 
@@ -86,9 +131,8 @@ export const PopupFilterContainer: React.FunctionComponent<PopupFilterContainerP
                         <PopoverContainer
                             fieldName={props.fieldName}
                             fieldTitle={props.fieldTitle}
-                            initialSelectedFilterType={props.selectedFilterType}
                             filterTypes={props.filterTypes}
-                            initialSelectedValue={props.selectedValue}
+                            filterDefinitions={props.filterDefinitions}
                             onSubmit={submitFilter}
                             onClear={clearFilter}
                         />

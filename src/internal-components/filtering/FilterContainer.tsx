@@ -1,44 +1,16 @@
 import React from 'react';
 
 import {FilterType} from '../../models/filterType';
-import {FilterCollection} from '../../models/filterState';
+import {FilterCollection, FilterDefinition} from '../../models/filterState';
 import {InlineFilterContainer} from './InlineFilterContainer';
 import {PopupFilterContainer} from './PopupFilterContainer';
 import {ColumnDefinition} from '../../models/columnDefinition';
 import {FilterState} from '../../models/filterState';
 
-function updateFilterDefinition(fieldName: string, filterState: FilterState, filterType: FilterType, value: string, filterTimeout: number) {
+function updateFilterDefinitions(fieldName: string, filterState: FilterState, filterDefinitions: FilterDefinition[], filterTimeout: number) {
     const newFilter = [
-        ...(
-            // value.length === 0 ? (
-            //     // if value is empty, then instead of updating the matching filter definition, we need to remove it if it exists
-            //     filterState.filter.filter(x => x.fieldName !== fieldName)
-            // ) : (
-            //     // if value is not empty, then we need to update the matching filter definition if it exists
-                filterState.filter.map(oldFilterStateFilterDefinition => oldFilterStateFilterDefinition.fieldName === fieldName ? (
-                    {
-                        fieldName,
-                        filterType,
-                        value
-                    }
-                ) : oldFilterStateFilterDefinition)
-            // )
-        ),
-        ...(
-            // value.length === 0 ? (
-            //     // if value is empty, then there's no case where we'd want to create a new filter definition
-            //     []
-            // ) : (
-                // if value is not empty, then we need to create the filter definition if it doesn't already exist
-                filterState.filter.find(x => x.fieldName === fieldName) == null ? [
-                    {
-                        fieldName,
-                        filterType,
-                        value
-                    }
-                ] : []
-            // )
-        )
+        ...filterState.filter.filter(x => x.fieldName !== fieldName),
+        ...filterDefinitions
     ];
 
     filterState.onFilterChange(newFilter, filterTimeout);
@@ -52,32 +24,35 @@ export interface FilterContainerProps {
 }
 
 export const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-    const matchedFilter = props.filterState.filter.find((f) => f.fieldName == props.fieldName);
-    const isFilterActive = matchedFilter != null && matchedFilter.value.length > 0;
-
-    const selectedFilterType = matchedFilter?.filterType ?? props.filterState.defaultFilter ?? FilterType.StartsWith;
-    const selectedValue = matchedFilter?.value ?? '';
+    const matchedFilterDefinitions = props.filterState.filter.filter((f) => f.fieldName == props.fieldName);
+    const isFilterActive = matchedFilterDefinitions.filter(x => x.value != null && x.value.length > 0).length > 0;
 
     const filterTimeout = props.filterStyle === "inline" ? 1000 : 0;
 
-    function onFilterChange(newFilterType: FilterType, newValue: string) {
-        updateFilterDefinition(props.fieldName, props.filterState, newFilterType, newValue, filterTimeout)
-    }
+    const filterTypes = [FilterType.StartsWith, FilterType.Contains];
 
-    const filterContainerProps = {
-        fieldName: props.fieldName,
-        fieldTitle: props.fieldTitle,
-        isActive: isFilterActive,
-        filterTypes: [FilterType.StartsWith, FilterType.Contains],
-        selectedFilterType,
-        selectedValue,
-        onFilterChange
-    };
+    function onFilterChange(filterDefinitions: FilterDefinition[]) {
+        updateFilterDefinitions(props.fieldName, props.filterState, filterDefinitions, filterTimeout)
+    }
 
     return (
         <div className="fancy-grid-column-filter-container">
-            {props.filterStyle === "inline" ? <InlineFilterContainer {...filterContainerProps} /> : null}
-            {props.filterStyle === "popup" ? <PopupFilterContainer {...filterContainerProps}/> : null}
+            {props.filterStyle === "inline" ? <InlineFilterContainer
+                filterDefinition={matchedFilterDefinitions[0] ?? null}
+                fieldName={props.fieldName}
+                fieldTitle={props.fieldTitle}
+                isActive={isFilterActive}
+                filterTypes={filterTypes}
+                onFilterChange={filterDefinition => onFilterChange([filterDefinition])}
+            /> : null}
+            {props.filterStyle === "popup" ? <PopupFilterContainer
+                filterDefinitions={matchedFilterDefinitions}
+                fieldName={props.fieldName}
+                fieldTitle={props.fieldTitle}
+                isActive={isFilterActive}
+                filterTypes={filterTypes}
+                onFilterChange={onFilterChange}
+            /> : null}
         </div>
     )
 };
