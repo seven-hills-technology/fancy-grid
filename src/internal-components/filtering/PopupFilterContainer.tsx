@@ -28,6 +28,10 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
         ]);
     }
 
+    if (filterDefinitions.length === 0) {
+        addFilter();
+    }
+
     function removeFilter(filterIndex: number) {
         setFilterDefinitions(filterDefinitions.filter((_, i) => i !== filterIndex));
     }
