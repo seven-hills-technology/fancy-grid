@@ -70,41 +70,44 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
     return (
         <Popover id="popover-basic" style={{minWidth: "300px"}}>
             <Popover.Content>
-                <p>Show items with value that:</p>
-                {filterDefinitions.map((filterDefinition, i) => (
-                    <React.Fragment key={i}>
-                        <div style={{marginBottom: "1rem"}}>
-                            <FilterTypeDropdownButton
-                                selectedFilterType={filterDefinition.filterType}
-                                filterTypes={filterTypes}
-                                onChange={filterType => setFilterType(i, filterType as FilterType)}
-                                showCaret={true}
-                                style={{display: "inline-block"}}
-                            >
-                                {FilterTypeDisplays[filterDefinition.filterType]}
-                            </FilterTypeDropdownButton>
-                            <Button variant={'outline-secondary'} onClick={() => removeFilter(i)}>
-                                <i className="fas fa-times-circle" />
-                            </Button>
-                        </div>
-                        <FilterInput
-                            filterStyle="popup"
-                            columnDefinition={props.columnDefinition}
-                            filterType={filterDefinition.filterType}
-                            value={filterDefinition.value}
-                            onChange={value => setValue(i, value)}
-                        />
-                    </React.Fragment>
-                ))}
-                <div style={{marginTop: "1rem"}}>
-                    <Button variant={'outline-secondary'} onClick={addFilter}>
-                        <i className="fas fa-plus-circle" />
-                    </Button>
-                </div>
-                <div style={{marginTop: "1rem"}}>
-                    <Button variant={'outline-secondary'} onClick={submitFilter}>Filter</Button>
-                    <Button variant={'outline-secondary'} onClick={clearFilter}>Clear</Button>
-                </div>
+                <form onSubmit={event => {submitFilter(); event.preventDefault()}}>
+                    <p>Show items with value that:</p>
+                    {filterDefinitions.map((filterDefinition, i) => (
+                        <React.Fragment key={i}>
+                            <div style={{marginBottom: "1rem"}}>
+                                <FilterTypeDropdownButton
+                                    selectedFilterType={filterDefinition.filterType}
+                                    filterTypes={filterTypes}
+                                    onChange={filterType => setFilterType(i, filterType as FilterType)}
+                                    showCaret={true}
+                                    style={{display: "inline-block"}}
+                                >
+                                    {FilterTypeDisplays[filterDefinition.filterType]}
+                                </FilterTypeDropdownButton>
+                                <Button variant={'outline-secondary'} onClick={() => removeFilter(i)}>
+                                    <i className="fas fa-times-circle" />
+                                </Button>
+                            </div>
+                            <FilterInput
+                                filterStyle="popup"
+                                columnDefinition={props.columnDefinition}
+                                filterType={filterDefinition.filterType}
+                                value={filterDefinition.value}
+                                onChange={value => setValue(i, value)}
+                                autoFocus={i === 0}
+                            />
+                        </React.Fragment>
+                    ))}
+                    <div style={{marginTop: "1rem"}}>
+                        <Button variant={'outline-secondary'} onClick={addFilter}>
+                            <i className="fas fa-plus-circle" />
+                        </Button>
+                    </div>
+                    <div style={{marginTop: "1rem"}}>
+                        <Button type="submit" variant={'outline-secondary'}>Filter</Button>
+                        <Button variant={'outline-secondary'} onClick={clearFilter}>Clear</Button>
+                    </div>
+                </form>
             </Popover.Content>
         </Popover>
     )

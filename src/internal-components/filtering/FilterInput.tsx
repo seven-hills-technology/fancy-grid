@@ -9,6 +9,7 @@ export interface FilterInputProps {
     filterStyle: "popup" | "inline";
     value: string;
     onChange: (value: string) => void;
+    autoFocus?: boolean;
 }
 
 export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo(props => {
@@ -32,6 +33,7 @@ export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo
                     type={props.columnDefinition.fieldType}
                     value={props.value}
                     disabled={isInputDisabled}
+                    autoFocus={props.autoFocus}
                 />
             );
         case 'boolean':
@@ -42,6 +44,7 @@ export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo
                     onChange={(event) => props.onChange(event.target.value)}
                     value={props.value}
                     disabled={isInputDisabled}
+                    autoFocus={props.autoFocus}
                 >
                     {props.value === "" ? <option value="">(Pick one)</option> : null}
                     <option value="true">True</option>
@@ -56,6 +59,7 @@ export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo
                     onChange={(event) => props.onChange(event.target.value)}
                     value={props.value}
                     disabled={isInputDisabled}
+                    autoFocus={props.autoFocus}
                 >
                     {props.value === "" ? <option value="">(Pick one)</option> : null}
                     <option value="true">Yes</option>
