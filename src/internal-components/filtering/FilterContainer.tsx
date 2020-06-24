@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {FilterDefinition, FilterState} from '../../models/filterState';
+import {FilterDefinition, FilterState, isValidFilterDefinition} from '../../models/filterState';
 import {InlineFilterContainer} from './InlineFilterContainer';
 import {PopupFilterContainer} from './PopupFilterContainer';
 import {FilterableColumnDefinition} from '../../models/filterableColumnDefinition';
@@ -21,7 +21,7 @@ export interface FilterContainerProps {
 
 export const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
     const matchedFilterDefinitions = props.filterState.filter.filter((f) => f.fieldName == props.columnDefinition.name);
-    const isFilterActive = matchedFilterDefinitions.filter(x => x.value != null && x.value.length > 0).length > 0;
+    const isFilterActive = matchedFilterDefinitions.filter(x => isValidFilterDefinition(x)).length > 0;
 
     const filterTimeout = props.columnDefinition.filterStyle === "inline" ? 1000 : 0;
 

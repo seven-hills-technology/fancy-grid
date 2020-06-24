@@ -5,4 +5,4 @@ export interface FilterableColumnDefinition {
     fieldType: FieldType;
 }
 
-export type FieldType = "text" | "number" | "date" | "datetime" | "boolean" | "yesNo";
+export type FieldType = "text" | "number" | "date" | "boolean" | "yesNo";

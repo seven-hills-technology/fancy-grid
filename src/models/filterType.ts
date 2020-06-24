@@ -1,25 +1,46 @@
 import {FieldType} from './filterableColumnDefinition';
 
 export enum FilterType {
-    IsEqualTo = "eq",
-    IsNotEqualTo = "neq",
-    StartsWith = "startswith",
-    Contains = "contains",
-    DoesNotContain = "doesnotcontain",
-    EndsWith = "endswith",
-    IsNull = "isnull",
-    IsNotNull = "isnotnull",
-    IsEmpty = "isempty",
-    IsNotEmpty = "isnotempty",
-    IsLessThanOrEqualTo = "lte",
-    IsLessThan = "lt",
-    IsGreaterThanOrEqualTo = "gte",
-    IsGreaterThan = "gt",
-    IsBeforeOrEqualTo = "lte",
-    IsBefore = "lt",
-    IsAfterOrEqualTo = "gte",
-    IsAfter = "gt"
+    IsEqualTo = "IsEqualTo",
+    IsNotEqualTo = "IsNotEqualTo",
+    StartsWith = "StartsWith",
+    Contains = "Contains",
+    DoesNotContain = "DoesNotContain",
+    EndsWith = "EndsWith",
+    IsNull = "IsNull",
+    IsNotNull = "IsNotNull",
+    IsEmpty = "IsEmpty",
+    IsNotEmpty = "IsNotEmpty",
+    IsLessThanOrEqualTo = "IsLessThanOrEqualTo",
+    IsLessThan = "IsLessThan",
+    IsGreaterThanOrEqualTo = "IsGreaterThanOrEqualTo",
+    IsGreaterThan = "IsGreaterThan",
+    IsBeforeOrEqualTo = "IsBeforeOrEqualTo",
+    IsBefore = "IsBefore",
+    IsAfterOrEqualTo = "IsAfterOrEqualTo",
+    IsAfter = "IsAfter"
 }
+
+export const FilterTypeOperatorCodes = {
+    [FilterType.IsEqualTo]: "eq",
+    [FilterType.IsNotEqualTo]: "neq",
+    [FilterType.StartsWith]: "startswith",
+    [FilterType.Contains]: "contains",
+    [FilterType.DoesNotContain]: "doesnotcontain",
+    [FilterType.EndsWith]: "endswith",
+    [FilterType.IsNull]: "isnull",
+    [FilterType.IsNotNull]: "isnotnull",
+    [FilterType.IsEmpty]: "isempty",
+    [FilterType.IsNotEmpty]: "isnotempty",
+    [FilterType.IsLessThanOrEqualTo]: "lte",
+    [FilterType.IsLessThan]: "lt",
+    [FilterType.IsGreaterThanOrEqualTo]: "gte",
+    [FilterType.IsGreaterThan]: "gt",
+    [FilterType.IsBeforeOrEqualTo]: "lte",
+    [FilterType.IsBefore]: "lt",
+    [FilterType.IsAfterOrEqualTo]: "gte",
+    [FilterType.IsAfter]: "gt"
+};
 
 export const FilterTypeDisplays = {
     [FilterType.IsEqualTo]: "Is equal to",
@@ -81,7 +102,6 @@ export function getFilterTypesForFieldType(fieldType: FieldType) {
                 FilterType.IsNotNull
             ];
         case 'date':
-        case 'datetime':
             return [
                 FilterType.IsEqualTo,
                 FilterType.IsNotEqualTo,

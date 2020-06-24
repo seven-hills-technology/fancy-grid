@@ -2,9 +2,15 @@ import React, {useMemo, useRef, useState} from 'react';
 import {Button, Overlay, Popover} from 'react-bootstrap';
 
 import {FilterTypeDropdownButton} from './FilterTypeDropdownButton';
-import {FilterType, FilterTypeDisplays, getFilterTypesForFieldType} from '../../models/filterType';
+import {
+    FilterType,
+    FilterTypeDisplays,
+    FilterTypeOperatorCodes,
+    getFilterTypesForFieldType
+} from '../../models/filterType';
 import {FilterDefinition} from '../../models/filterState';
 import {FilterableColumnDefinition} from '../../models/filterableColumnDefinition';
+import {FilterInput} from './FilterInput';
 
 interface PopoverContainerProps {
     columnDefinition: FilterableColumnDefinition;
@@ -22,7 +28,9 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
             ...filterDefinitions,
             {
                 fieldName: props.columnDefinition.name,
+                fieldType: props.columnDefinition.fieldType,
                 filterType: filterTypes[0],
+                operator: FilterTypeOperatorCodes[filterTypes[0]],
                 value: ""
             }
         ]);
@@ -39,7 +47,8 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
     function setFilterType(index: number, filterType: FilterType) {
         setFilterDefinitions(filterDefinitions.map((x, i) => i !== index ? x : {
             ...x,
-            filterType
+            filterType,
+            operator: FilterTypeOperatorCodes[filterType]
         }));
     }
 
@@ -59,7 +68,7 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
     }
 
     return (
-        <Popover id="popover-basic" style={{minWidth: "220px"}}>
+        <Popover id="popover-basic" style={{minWidth: "300px"}}>
             <Popover.Content>
                 <p>Show items with value that:</p>
                 {filterDefinitions.map((filterDefinition, i) => (
@@ -78,13 +87,13 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
                                 <i className="fas fa-times-circle" />
                             </Button>
                         </div>
-                        <input
-                            type="text"
-                            className="fancy-grid-column-filter-input fancy-grid-input"
-                            name={props.columnDefinition.name}
-                            placeholder={props.columnDefinition.title}
-                            onChange={(event) => setValue(i, event.target.value)}
-                            value={filterDefinition.value} />
+                        <FilterInput
+                            filterStyle="popup"
+                            columnDefinition={props.columnDefinition}
+                            filterType={filterDefinition.filterType}
+                            value={filterDefinition.value}
+                            onChange={value => setValue(i, value)}
+                        />
                     </React.Fragment>
                 ))}
                 <div style={{marginTop: "1rem"}}>
