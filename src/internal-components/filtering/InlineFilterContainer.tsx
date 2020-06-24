@@ -1,30 +1,40 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 
 import {FilterTypeDropdownButton} from './FilterTypeDropdownButton';
-import {FilterType} from '../../models/filterType';
+import {FilterTypeOperatorCodes, getFilterTypesForFieldType} from '../../models/filterType';
+import {FilterDefinition} from '../../models/filterState';
+import {FilterableColumnDefinition} from '../../models/filterableColumnDefinition';
+import {FilterInput} from './FilterInput';
 
 
 export interface InlineFilterContainerProps {
-    fieldName: string;
-    fieldTitle: string;
+    columnDefinition: FilterableColumnDefinition;
     isActive: boolean;
-    filterTypes: FilterType[];
-    selectedFilterType: FilterType;
-    selectedValue: string;
-    onFilterChange: (filterType: FilterType, value: string) => void;
+    filterDefinition: FilterDefinition | null;
+    onFilterChange: (filterDefinition: FilterDefinition) => void;
 }
 
 export const InlineFilterContainer: React.FunctionComponent<InlineFilterContainerProps> = props => {
+    const filterTypes = useMemo(() => getFilterTypesForFieldType(props.columnDefinition.fieldType), [props.columnDefinition]);
+
+    const filterDefinition = props.filterDefinition ?? {
+        fieldName: props.columnDefinition.name,
+        fieldType: props.columnDefinition.fieldType,
+        value: "",
+        filterType: filterTypes[0],
+        operator: FilterTypeOperatorCodes[filterTypes[0]]
+    };
+
     return (
         <>
-            <input
-                className="fancy-grid-column-filter-input fancy-grid-input"
-                name={props.fieldName}
-                onChange={(event) => props.onFilterChange(props.selectedFilterType, event.target.value)}
-                placeholder={props.fieldTitle}
-                type="text"
-                value={props.selectedValue} />
-            <FilterTypeDropdownButton selectedFilterType={props.selectedFilterType} filterTypes={props.filterTypes} onChange={newFilterType => props.onFilterChange(newFilterType, props.selectedValue)}>
+            <FilterInput
+                filterStyle="inline"
+                columnDefinition={props.columnDefinition}
+                value={filterDefinition.value}
+                onChange={value => props.onFilterChange({...filterDefinition, value})}
+                filterType={filterDefinition.filterType}
+            />
+            <FilterTypeDropdownButton selectedFilterType={filterDefinition.filterType} filterTypes={filterTypes} onChange={newFilterType => props.onFilterChange({...filterDefinition, filterType: newFilterType, operator: FilterTypeOperatorCodes[newFilterType]})}>
                 <div className={`filter-button ${props.isActive ? "filter-button-active" : ""}`}>
                     <i className={`${'filter-button-content'} fas fa-filter`} />
                 </div>

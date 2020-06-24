@@ -55,6 +55,13 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
     let isSorting = props.sortState != null && props.sortState.sort != null && props.sortState.sort.length > 0 && props.sortState.sort[0].fieldName === props.columnDefinition.name;
     let direction = isSorting ? props.sortState!.sort[0].dir : null;
 
+    const filterableColumnDefinition = props.filterState != null && props.columnDefinition.name != null && filterStyle !== false ? {
+        name: props.columnDefinition.name,
+        title: props.columnDefinition.title ?? props.columnDefinition.name,
+        filterStyle,
+        fieldType: props.columnDefinition.fieldType ?? "text"
+    } : null;
+
     return (
         <th {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})}>
             <div className='fancy-grid-column-header-text-container'>
@@ -64,20 +71,16 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
                     {props.columnDefinition.title}
                 </span>
 
-                {props.filterState != null && props.columnDefinition.name != null && filterStyle === "popup" ? (
+                {props.filterState != null && filterableColumnDefinition?.filterStyle === "popup" ? (
                     <FilterContainer
-                        fieldName={props.columnDefinition.name}
-                        fieldTitle={props.columnDefinition.title ?? ""}
-                        filterStyle={"popup"}
+                        columnDefinition={filterableColumnDefinition}
                         filterState={props.filterState}
                     />
                 ) : null}
             </div>
-            {props.filterState != null && props.columnDefinition.name != null && filterStyle === "inline" ? (
+            {props.filterState != null && filterableColumnDefinition?.filterStyle === "inline" ? (
                 <FilterContainer
-                    fieldName={props.columnDefinition.name}
-                    fieldTitle={props.columnDefinition.title ?? ""}
-                    filterStyle={"inline"}
+                    columnDefinition={filterableColumnDefinition}
                     filterState={props.filterState}
                 />
             ) : null}

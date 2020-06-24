@@ -5,6 +5,7 @@ import { SortCollection, FilterCollection } from "..";
 import { ActionsTypes } from "./actionTypes";
 import { FancyGridDataRetrievalFunction } from "./types";
 import { ReduxState } from "./state";
+import {isValidFilterDefinition} from '../models/filterState';
 
 export const actionCreators = {
     setAllWithDefaults: (gridName: string) => async (dispatch: Dispatch<any>) => {
@@ -24,7 +25,7 @@ export const actionCreators = {
         };
 
         await actionCreators.setIsLoading(gridName, true)(dispatch);
-        const res = await dataRetrievalFunction(gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter);
+        const res = await dataRetrievalFunction(gridState.pageNum, gridState.pageSize, gridState.sort, gridState.filter.filter(x => isValidFilterDefinition(x)));
         await actionCreators.setIsLoading(gridName, false)(dispatch);
         const data = jsonDataSelector(res);
         const total = jsonTotalSelector(res);

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {CSSProperties, useRef} from 'react';
 import {Dropdown, DropdownButton} from 'react-bootstrap';
 
 import {FilterType, FilterTypeDisplays} from '../../models/filterType';
@@ -8,6 +8,7 @@ export interface FilterTypeDropdownButtonProps {
     filterTypes: FilterType[];
     onChange: (filterType: FilterType) => void;
     showCaret?: boolean
+    style?: CSSProperties;
 }
 
 export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdownButtonProps> = props => {
@@ -19,6 +20,7 @@ export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdow
             className={`${!props.showCaret ? "hide-caret": ""}`}
             title={props.children}
             variant="secondary-outline"
+            style={props.style}
         >
         {props.filterTypes.map((filterType, i) => {
             return(

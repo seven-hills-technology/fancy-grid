@@ -1,4 +1,5 @@
 import { CellRendererFunction } from './cellRendererFunction';
+import {FieldType} from './filterableColumnDefinition';
 
 export interface ColumnDefinition {
     name?: string;
@@ -7,4 +8,5 @@ export interface ColumnDefinition {
     tdProps?: React.DetailedHTMLProps<React.TdHTMLAttributes<HTMLTableDataCellElement>, HTMLTableDataCellElement>;
     sortable?: boolean;
     filterable?: boolean | "inline" | "popup";
+    fieldType?: FieldType;
 }
