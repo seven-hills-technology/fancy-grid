@@ -1,11 +1,9 @@
 import React from 'react';
 
-import {FilterType} from '../../models/filterType';
-import {FilterCollection, FilterDefinition} from '../../models/filterState';
+import {FilterDefinition, FilterState} from '../../models/filterState';
 import {InlineFilterContainer} from './InlineFilterContainer';
 import {PopupFilterContainer} from './PopupFilterContainer';
-import {ColumnDefinition} from '../../models/columnDefinition';
-import {FilterState} from '../../models/filterState';
+import {FilterableColumnDefinition} from '../../models/filterableColumnDefinition';
 
 function updateFilterDefinitions(fieldName: string, filterState: FilterState, filterDefinitions: FilterDefinition[], filterTimeout: number) {
     const newFilter = [
@@ -17,40 +15,33 @@ function updateFilterDefinitions(fieldName: string, filterState: FilterState, fi
 }
 
 export interface FilterContainerProps {
-    filterStyle: "popup" | "inline";
+    columnDefinition: FilterableColumnDefinition;
     filterState: FilterState;
-    fieldName: string;
-    fieldTitle: string;
 }
 
 export const FilterContainer: React.FunctionComponent<FilterContainerProps> = props => {
-    const matchedFilterDefinitions = props.filterState.filter.filter((f) => f.fieldName == props.fieldName);
+    const matchedFilterDefinitions = props.filterState.filter.filter((f) => f.fieldName == props.columnDefinition.name);
     const isFilterActive = matchedFilterDefinitions.filter(x => x.value != null && x.value.length > 0).length > 0;
 
-    const filterTimeout = props.filterStyle === "inline" ? 1000 : 0;
+    const filterTimeout = props.columnDefinition.filterStyle === "inline" ? 1000 : 0;
 
-    const filterTypes = [FilterType.StartsWith, FilterType.Contains];
 
     function onFilterChange(filterDefinitions: FilterDefinition[]) {
-        updateFilterDefinitions(props.fieldName, props.filterState, filterDefinitions, filterTimeout)
+        updateFilterDefinitions(props.columnDefinition.name, props.filterState, filterDefinitions, filterTimeout)
     }
 
     return (
         <div className="fancy-grid-column-filter-container">
-            {props.filterStyle === "inline" ? <InlineFilterContainer
+            {props.columnDefinition.filterStyle === "inline" ? <InlineFilterContainer
+                columnDefinition={props.columnDefinition}
                 filterDefinition={matchedFilterDefinitions[0] ?? null}
-                fieldName={props.fieldName}
-                fieldTitle={props.fieldTitle}
                 isActive={isFilterActive}
-                filterTypes={filterTypes}
                 onFilterChange={filterDefinition => onFilterChange([filterDefinition])}
             /> : null}
-            {props.filterStyle === "popup" ? <PopupFilterContainer
+            {props.columnDefinition.filterStyle === "popup" ? <PopupFilterContainer
+                columnDefinition={props.columnDefinition}
                 filterDefinitions={matchedFilterDefinitions}
-                fieldName={props.fieldName}
-                fieldTitle={props.fieldTitle}
                 isActive={isFilterActive}
-                filterTypes={filterTypes}
                 onFilterChange={onFilterChange}
             /> : null}
         </div>

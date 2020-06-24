@@ -1,28 +1,28 @@
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {Button, Overlay, Popover} from 'react-bootstrap';
 
 import {FilterTypeDropdownButton} from './FilterTypeDropdownButton';
-import {FilterType, FilterTypeDisplays} from '../../models/filterType';
+import {FilterType, FilterTypeDisplays, getFilterTypesForFieldType} from '../../models/filterType';
 import {FilterDefinition} from '../../models/filterState';
+import {FilterableColumnDefinition} from '../../models/filterableColumnDefinition';
 
 interface PopoverContainerProps {
+    columnDefinition: FilterableColumnDefinition;
     filterDefinitions: FilterDefinition[];
-    fieldName: string;
-    fieldTitle: string;
-    filterTypes: FilterType[];
     onSubmit: (filterDefinitions: FilterDefinition[]) => void;
     onClear: () => void;
 }
 
 const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props => {
     const [filterDefinitions, setFilterDefinitions] = useState(props.filterDefinitions);
+    const filterTypes = useMemo(() => getFilterTypesForFieldType(props.columnDefinition.fieldType), [props.columnDefinition]);
 
     function addFilter() {
         setFilterDefinitions([
             ...filterDefinitions,
             {
-                fieldName: props.fieldName,
-                filterType: props.filterTypes[0],
+                fieldName: props.columnDefinition.name,
+                filterType: filterTypes[0],
                 value: ""
             }
         ]);
@@ -67,7 +67,7 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
                         <div style={{marginBottom: "1rem"}}>
                             <FilterTypeDropdownButton
                                 selectedFilterType={filterDefinition.filterType}
-                                filterTypes={props.filterTypes}
+                                filterTypes={filterTypes}
                                 onChange={filterType => setFilterType(i, filterType as FilterType)}
                                 showCaret={true}
                                 style={{display: "inline-block"}}
@@ -81,8 +81,8 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
                         <input
                             type="text"
                             className="fancy-grid-column-filter-input fancy-grid-input"
-                            name={props.fieldName}
-                            placeholder={props.fieldTitle}
+                            name={props.columnDefinition.name}
+                            placeholder={props.columnDefinition.title}
                             onChange={(event) => setValue(i, event.target.value)}
                             value={filterDefinition.value} />
                     </React.Fragment>
@@ -102,11 +102,9 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
 };
 
 export interface PopupFilterContainerProps {
+    columnDefinition: FilterableColumnDefinition;
     filterDefinitions: FilterDefinition[];
-    fieldName: string;
-    fieldTitle: string;
     isActive: boolean;
-    filterTypes: FilterType[];
     onFilterChange: (filterDefinitions: FilterDefinition[]) => void;
 }
 
@@ -133,9 +131,7 @@ export const PopupFilterContainer: React.FunctionComponent<PopupFilterContainerP
                 {({ref, style}) => (
                     <div ref={ref} style={style}>
                         <PopoverContainer
-                            fieldName={props.fieldName}
-                            fieldTitle={props.fieldTitle}
-                            filterTypes={props.filterTypes}
+                            columnDefinition={props.columnDefinition}
                             filterDefinitions={props.filterDefinitions}
                             onSubmit={submitFilter}
                             onClear={clearFilter}
