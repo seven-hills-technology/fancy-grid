@@ -21,6 +21,8 @@ export interface NonReduxGridOnlyProps {
 }
 
 export interface IncludingReduxGridProps {
+    dataItemIdentityFunction?: (x: any) => any;
+    selectedDataItems?: any[];
     onRowClick?: (row: any, index: number) => void;
 }
 
@@ -77,7 +79,7 @@ function extractInformationFromGridChildren(children: ReactNode): {
     return {columnListColumnDefinitions, pageState, sortState, filterState, dataSource};
 }
 
-export const Grid: React.FunctionComponent<GridProps> = (props) => {
+export const Grid: React.FunctionComponent<GridProps> = ({selectedDataItems, dataItemIdentityFunction = (x: any) => x.id, ...props}) => {
     const [dataResult, setDataResult] = useState({data: [], total: 0} as DataResult);
 
     const {columnListColumnDefinitions, pageState, sortState, filterState, dataSource} = extractInformationFromGridChildren(props.children);
@@ -116,7 +118,10 @@ export const Grid: React.FunctionComponent<GridProps> = (props) => {
                 <DataBody
                     dataItems={dataResult.data}
                     columnDefinitions={columnDefinitions}
+                    dataItemIdentityFunction={dataItemIdentityFunction}
+                    selectedDataItems={selectedDataItems}
                     onRowClick={props.onRowClick}
+
                 />
                 {pageState != null ? (
                     <PagerFooter 

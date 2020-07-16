@@ -54,7 +54,7 @@ export const PagerFooter: React.FunctionComponent<ColumnHeaderRowProps> = props 
                         </div>
                         {props.pageState.onRefresh != null ? (
                             <div style={{flex: "0 0 50px"}}>
-                                <button className="fancy-grid-button fancy-grid-footer-button" onClick={props.pageState.onRefresh}>
+                                <button type="button" className="fancy-grid-button fancy-grid-footer-button" onClick={props.pageState.onRefresh}>
                                     <i className="fas fa-sync-alt"></i>
                                 </button>
                             </div>

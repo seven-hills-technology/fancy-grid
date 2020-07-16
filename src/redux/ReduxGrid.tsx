@@ -19,6 +19,8 @@ export interface ReduxGridProps<T> extends IncludingReduxGridProps {
     jsonTotalSelector?: (res: any) => number;
     store?: any;
     showRefreshButton?: boolean;
+    selectedDataItems?: T[];
+    dataItemIdentityFunction?: (x: T) => any;
 }
 
 export const ReduxGrid: React.FunctionComponent<ReduxGridProps<any>> = props => {
