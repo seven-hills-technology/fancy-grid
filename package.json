@@ -1,6 +1,6 @@
 {
   "name": "@sht-dev/fancy-grid",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "A client-side grid that's FANCY",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,11 +17,12 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.0",
-    "react": "^16.9.0",
-    "react-bootstrap": "^1.0.0"
+    "react-bootstrap": "^1.0.0",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4"
   },
   "peerDependencies": {
-    "react-redux": "^7.1.1"
+    "react": ">= 16.9.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.2",
@@ -33,7 +34,6 @@
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.7.2",
     "react-dom": "^16.9.0",
-    "react-redux": "^7.1.3",
     "react-syntax-highlighter": "^11.0.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
