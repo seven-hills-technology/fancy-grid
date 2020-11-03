@@ -47,6 +47,7 @@ export interface ColumnHeaderCellProps {
     columnDefinition: ColumnDefinition;
     sortState: SortState | null;
     filterState: FilterState | null;
+    columnWidth?: number;
 }
 
 export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = props => {
@@ -65,7 +66,7 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
     } as FilterableColumnDefinition : null;
 
     return (
-        <th {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})}>
+        <th {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})} style={{width: props.columnDefinition.columnWidth ? props.columnDefinition.columnWidth : ''}}>
             <div className='fancy-grid-column-header-text-container'>
                 <span className={`fancy-grid-column-header-text ${sortable ? 'fancy-grid-sortable' : ''} ${isSorting && direction ? 'fancy-grid-column-header-text-sort-' + direction : ''}`}
                       onClick={() => props.sortState ? applySort(props.sortState!, props.columnDefinition) : null}

@@ -11,4 +11,5 @@ export interface ColumnDefinition {
     filterable?: boolean | "inline" | "popup";
     fieldType?: FieldType;
     whiteList?: FilterType[]
+    columnWidth?: number;
 }
