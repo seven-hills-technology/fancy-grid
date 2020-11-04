@@ -3,6 +3,7 @@ import { ColumnDefinition } from '../models/columnDefinition';
 import { SortState, SortCollection } from '../models/sortState';
 import { FilterState } from '../models/filterState';
 import {FilterContainer} from './filtering/FilterContainer';
+import { FilterableColumnDefinition } from '../models/filterableColumnDefinition';
 
 
 function applySort(sortState: SortState, columnDefinition: ColumnDefinition) {
@@ -59,8 +60,9 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
         name: props.columnDefinition.name,
         title: props.columnDefinition.title ?? props.columnDefinition.name,
         filterStyle,
-        fieldType: props.columnDefinition.fieldType ?? "text"
-    } : null;
+        fieldType: props.columnDefinition.fieldType ?? "text",
+        whiteList: props.columnDefinition.whiteList
+    } as FilterableColumnDefinition : null;
 
     return (
         <th {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})}>

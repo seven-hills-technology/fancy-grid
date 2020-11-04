@@ -21,7 +21,13 @@ interface PopoverContainerProps {
 
 const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props => {
     const [filterDefinitions, setFilterDefinitions] = useState(props.filterDefinitions);
-    const filterTypes = useMemo(() => getFilterTypesForFieldType(props.columnDefinition.fieldType), [props.columnDefinition]);
+    const filterTypes = useMemo(() => {
+        const filterTypesForFieldType = getFilterTypesForFieldType(props.columnDefinition.fieldType);
+        if (props.columnDefinition.whiteList != null) {
+            return props.columnDefinition.whiteList.filter(x => filterTypesForFieldType.includes(x));
+        }
+        return filterTypesForFieldType;
+    }, [props.columnDefinition]);
 
     function addFilter() {
         setFilterDefinitions([

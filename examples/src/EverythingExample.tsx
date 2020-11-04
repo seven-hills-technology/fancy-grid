@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import FancyGrid from '../../dist';
+import FancyGrid, { FilterType } from '../../dist';
 
 import usStates from './states.json';
 
@@ -91,7 +91,8 @@ export function EverythingExample() {
                     title="Name"/>
                 <FancyGrid.Column
                     name="abbreviation"
-                    title="Abbreviation"/>
+                    title="Abbreviation"
+                    whiteList={[FilterType.Contains]}/>
             </FancyGrid.ColumnList>
             <FancyGrid.Filterable filter={filterState} onFilterChange={onFilterChange}/>
             <FancyGrid.Sortable
@@ -225,7 +226,8 @@ export function EverythingExample() {
                     title="Name"/>
                 <FancyGrid.Column
                     name="abbreviation"
-                    title="Abbreviation"/>
+                    title="Abbreviation"
+                    whiteList={[FilterType.Contains]}/>
             </FancyGrid.ColumnList>
             <FancyGrid.Filterable filter={filterState} onFilterChange={onFilterChange}/>
             <FancyGrid.Sortable

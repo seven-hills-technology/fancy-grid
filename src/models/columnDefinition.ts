@@ -1,5 +1,6 @@
 import { CellRendererFunction } from './cellRendererFunction';
 import {FieldType} from './filterableColumnDefinition';
+import { FilterType } from './filterType';
 
 export interface ColumnDefinition {
     name?: string;
@@ -9,4 +10,5 @@ export interface ColumnDefinition {
     sortable?: boolean;
     filterable?: boolean | "inline" | "popup";
     fieldType?: FieldType;
+    whiteList?: FilterType[]
 }
