@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useCallback, useMemo } from 'react';
+import React, { ReactNode, useState, useCallback, useMemo, useEffect } from 'react';
 import { ColumnList, getColumnDefinitionsFromColumnListComponent } from './ColumnList';
 import { ColumnDefinition } from '../models/columnDefinition';
 import { PageState } from '../models/pageState';
@@ -15,6 +15,7 @@ import { DataSourceDefinition } from '../models/dataSourceDefinition';
 import { DataResult } from '../models/dataResult';
 import { RemoteDataSource } from './RemoteDataSource';
 import { LoadingSpinner } from '../internal-components/loadingSpinner';
+import * as _ from 'lodash';
 
 export interface NonReduxGridOnlyProps {
     isLoading?: boolean;
@@ -84,13 +85,22 @@ export const Grid: React.FunctionComponent<GridProps> = ({selectedDataItems, dat
 
     const {columnListColumnDefinitions, pageState, sortState, filterState, dataSource} = extractInformationFromGridChildren(props.children);
 
+    let onFetchData = useCallback(async (_filterState: FilterState, _sortState: SortState, _pageState: PageState) => {
+        return await dataSource!.fetchData!(_filterState!.filter, _sortState!.sort, _pageState!.page, _pageState!.pageSize);
+    }, []);
+
+    const delayedQuery = useCallback(_.debounce(async q => {
+        let {filterState, sortState, pageState} = q;
+        return await onFetchData(filterState, sortState, pageState);
+    }, 500), [onFetchData]);
+    
     const updateDataResultAsync = async () => {
         if (dataSource == null) {
             throw new Error("No data source was provided");
         } if (dataSource.data != null) {
             return {data: dataSource.data, total: pageState != null ? pageState.count : 0};
         } else if (dataSource.fetchData != null) {
-            return await dataSource.fetchData(filterState!.filter, sortState!.sort, pageState!.page, pageState!.pageSize)
+            return await delayedQuery({filterState, sortState, pageState});
         } else {
             throw new Error("Provided data source must have either 'data' or 'fetchData' populated");
         }
@@ -99,8 +109,9 @@ export const Grid: React.FunctionComponent<GridProps> = ({selectedDataItems, dat
     const dataResultPromise = useMemo(() => updateDataResultAsync(), [filterState, sortState, pageState]);
     dataResultPromise
         .then(newDataResult => {
-            if (newDataResult !== dataResult && (newDataResult.data !== dataResult.data || newDataResult.total !== dataResult.total)) {
-                setDataResult(newDataResult);
+            console.log('newDataResult', newDataResult);
+            if (newDataResult != null && newDataResult !== dataResult && (newDataResult!.data !== dataResult.data || newDataResult!.total !== dataResult.total)) {
+                setDataResult(newDataResult!);
             }
         })
 
