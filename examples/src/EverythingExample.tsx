@@ -36,7 +36,7 @@ async function fetchData(filterState: FancyGrid.FilterCollection, sortState: Fan
         total: filteredDataRows.length
     }
 }
-a
+
 async function rowClick(row: any, index: number) {
     console.log(index);
 }
@@ -90,6 +90,7 @@ export function EverythingExample() {
                     name="name"
                     title="Name"/>
                 <FancyGrid.Column
+                    className="fixed-250-width"
                     name="abbreviation"
                     title="Abbreviation"
                     whiteList={[FilterType.Contains]}/>
@@ -225,10 +226,10 @@ export function EverythingExample() {
                     name="name"
                     title="Name"/>
                 <FancyGrid.Column
+                    className="fixed-250-width"
                     name="abbreviation"
                     title="Abbreviation"
-                    whiteList={[FilterType.Contains]}
-                    columnWidth={250}/>
+                    whiteList={[FilterType.Contains]}/>
             </FancyGrid.ColumnList>
             <FancyGrid.Filterable filter={filterState} onFilterChange={onFilterChange}/>
             <FancyGrid.Sortable
