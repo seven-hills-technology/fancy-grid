@@ -48,7 +48,7 @@ export interface ColumnHeaderCellProps {
     sortState: SortState | null;
     filterState: FilterState | null;
 }
-
+ 
 export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = props => {
     const filterStyle = getFilterStyle(props.columnDefinition, props.filterState);
     let sortable = (props.columnDefinition.sortable == null || props.columnDefinition.sortable === true) && props.columnDefinition.name != null && props.sortState != null && props.sortState.onSortChange != null;
@@ -65,10 +65,10 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
     } as FilterableColumnDefinition : null;
 
     return (
-        <th {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})}>
+        <th {...(props.columnDefinition.tdProps != null ? props.columnDefinition.tdProps : {})} className={props.columnDefinition.className != null ? props.columnDefinition.className : ''}>
             <div className='fancy-grid-column-header-text-container'>
                 <span className={`fancy-grid-column-header-text ${sortable ? 'fancy-grid-sortable' : ''} ${isSorting && direction ? 'fancy-grid-column-header-text-sort-' + direction : ''}`}
-                      onClick={() => props.sortState ? applySort(props.sortState!, props.columnDefinition) : null}
+                      onClick={() => props.sortState && sortable ? applySort(props.sortState!, props.columnDefinition) : null}
                 >
                     {props.columnDefinition.title}
                 </span>

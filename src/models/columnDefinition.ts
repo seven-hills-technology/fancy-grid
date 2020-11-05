@@ -10,5 +10,6 @@ export interface ColumnDefinition {
     sortable?: boolean;
     filterable?: boolean | "inline" | "popup";
     fieldType?: FieldType;
-    whiteList?: FilterType[]
+    whiteList?: FilterType[];
+    className?: string;
 }

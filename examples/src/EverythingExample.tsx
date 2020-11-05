@@ -90,6 +90,7 @@ export function EverythingExample() {
                     name="name"
                     title="Name"/>
                 <FancyGrid.Column
+                    className="fixed-250-width"
                     name="abbreviation"
                     title="Abbreviation"
                     whiteList={[FilterType.Contains]}/>
@@ -225,6 +226,7 @@ export function EverythingExample() {
                     name="name"
                     title="Name"/>
                 <FancyGrid.Column
+                    className="fixed-250-width"
                     name="abbreviation"
                     title="Abbreviation"
                     whiteList={[FilterType.Contains]}/>
