@@ -10,6 +10,7 @@ export interface FilterInputProps {
     value: string;
     onChange: (value: string) => void;
     autoFocus?: boolean;
+    dropdownOptions?: string[];
 }
 
 export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo(props => {
@@ -64,6 +65,21 @@ export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo
                     {props.value === "" ? <option value="">(Pick one)</option> : null}
                     <option value="true">Yes</option>
                     <option value="false">No</option>
+                </select>
+            )
+        case 'dropdown':
+            return (
+                <select
+                    className="fancy-grid-column-filter-input fancy-grid-input fancy-grid-dropdown"
+                    name={props.columnDefinition.name}
+                    onChange={(event) => props.onChange(event.target.value)}
+                    value={props.value}
+                    autoFocus={props.autoFocus}
+                >
+                    {props.value === "" ? <option value="">(Pick one)</option> : null}
+                    {props.dropdownOptions!.map((x, i) => 
+                        <option key={i} value={x}>{x}</option>
+                    )}
                 </select>
             )
         default:

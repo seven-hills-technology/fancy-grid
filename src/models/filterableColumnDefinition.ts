@@ -6,6 +6,7 @@ export interface FilterableColumnDefinition {
     filterStyle: "inline" | "popup";
     fieldType: FieldType;
     whiteList?: FilterType[]
+    dropdownOptions: string[];
 }
 
-export type FieldType = "text" | "number" | "date" | "boolean" | "yesNo";
+export type FieldType = "text" | "number" | "date" | "boolean" | "yesNo" | "dropdown";

@@ -39,8 +39,10 @@ export const InlineFilterContainer: React.FunctionComponent<InlineFilterContaine
                 value={filterDefinition.value}
                 onChange={value => props.onFilterChange({...filterDefinition, value})}
                 filterType={filterDefinition.filterType}
+                dropdownOptions={props.columnDefinition.dropdownOptions}
             />
-            {(filterTypes && filterTypes.length > 1) &&
+
+            {(filterTypes && filterTypes.length > 1 && props.columnDefinition.fieldType !== 'dropdown') &&
                 <FilterTypeDropdownButton selectedFilterType={filterDefinition.filterType} filterTypes={filterTypes} onChange={newFilterType => props.onFilterChange({...filterDefinition, filterType: newFilterType, operator: FilterTypeOperatorCodes[newFilterType]})}>
                     <div className={`filter-button ${props.isActive ? "filter-button-active" : ""}`}>
                         <i className={`${'filter-button-content'} fas fa-filter`} />
