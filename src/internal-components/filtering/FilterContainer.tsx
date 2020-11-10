@@ -4,6 +4,7 @@ import {FilterDefinition, FilterState, isValidFilterDefinition} from '../../mode
 import {InlineFilterContainer} from './InlineFilterContainer';
 import {PopupFilterContainer} from './PopupFilterContainer';
 import {FilterableColumnDefinition} from '../../models/filterableColumnDefinition';
+import { FilterType, FilterTypeOperatorCodes } from '../../models/filterType';
 
 function updateFilterDefinitions(fieldName: string, filterState: FilterState, filterDefinitions: FilterDefinition[], filterTimeout: number) {
     const newFilter = [
@@ -27,6 +28,13 @@ export const FilterContainer: React.FunctionComponent<FilterContainerProps> = pr
 
 
     function onFilterChange(filterDefinitions: FilterDefinition[]) {
+        filterDefinitions.map(x => {
+            if (x.filterType == null && x.fieldType === 'dropdown') {
+                x.filterType = FilterType.Contains;
+                x.operator = FilterTypeOperatorCodes[FilterType.Contains];
+            }
+            return x;
+        })
         updateFilterDefinitions(props.columnDefinition.name, props.filterState, filterDefinitions, filterTimeout)
     }
 

@@ -12,4 +12,5 @@ export interface ColumnDefinition {
     fieldType?: FieldType;
     whiteList?: FilterType[];
     className?: string;
+    dropdownOptions?: string[];
 }

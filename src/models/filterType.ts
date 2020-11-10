@@ -112,5 +112,7 @@ export function getFilterTypesForFieldType(fieldType: FieldType) {
                 FilterType.IsAfterOrEqualTo,
                 FilterType.IsAfter
             ]
+        default: 
+            return [];
     }
 }

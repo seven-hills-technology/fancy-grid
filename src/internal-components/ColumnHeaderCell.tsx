@@ -61,7 +61,8 @@ export const ColumnHeaderCell: React.FunctionComponent<ColumnHeaderCellProps> = 
         title: props.columnDefinition.title ?? props.columnDefinition.name,
         filterStyle,
         fieldType: props.columnDefinition.fieldType ?? "text",
-        whiteList: props.columnDefinition.whiteList
+        whiteList: props.columnDefinition.whiteList,
+        dropdownOptions: props.columnDefinition.dropdownOptions
     } as FilterableColumnDefinition : null;
 
     return (
