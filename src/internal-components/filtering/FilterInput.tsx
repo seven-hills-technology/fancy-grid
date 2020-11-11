@@ -10,7 +10,6 @@ export interface FilterInputProps {
     value: string;
     onChange: (value: string) => void;
     autoFocus?: boolean;
-    dropdownOptions?: string[];
 }
 
 export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo(props => {
@@ -77,8 +76,8 @@ export const FilterInput: React.FunctionComponent<FilterInputProps> = React.memo
                     autoFocus={props.autoFocus}
                 >
                     {props.value === "" ? <option value="">(Pick one)</option> : null}
-                    {props.dropdownOptions!.map((x, i) => 
-                        <option key={i} value={x}>{x}</option>
+                    {props.columnDefinition.dropdownOptions!.map((x, i) => 
+                        <option key={i} value={x.value}>{x.text}</option>
                     )}
                 </select>
             )

@@ -9,11 +9,11 @@ export interface FilterTypeDropdownButtonProps {
     onChange: (filterType: FilterType) => void;
     showCaret?: boolean
     style?: CSSProperties;
+    disabled?: boolean;
 }
 
 export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdownButtonProps> = props => {
     const {current: dropdownButtonId} = useRef(`filterTypeDropdownButton-${Math.random()}`);
-
     return (
         <DropdownButton
             id={dropdownButtonId}
@@ -21,6 +21,7 @@ export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdow
             title={props.children}
             variant="secondary-outline"
             style={props.style}
+            disabled={props.disabled ?? false}
         >
         {props.filterTypes.map((filterType, i) => {
             return(

@@ -1,4 +1,5 @@
 import { CellRendererFunction } from './cellRendererFunction';
+import { DropdownOptionsDefinition } from './dropdownOptionsDefinition';
 import {FieldType} from './filterableColumnDefinition';
 import { FilterType } from './filterType';
 
@@ -12,5 +13,5 @@ export interface ColumnDefinition {
     fieldType?: FieldType;
     whiteList?: FilterType[];
     className?: string;
-    dropdownOptions?: string[];
+    dropdownOptions?: DropdownOptionsDefinition[];
 }

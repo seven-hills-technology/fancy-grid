@@ -82,6 +82,7 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
                         <React.Fragment key={i}>
                             <div style={{marginBottom: "1rem"}}>
                                 <FilterTypeDropdownButton
+                                    disabled={filterTypes.length <= 1}
                                     selectedFilterType={filterDefinition.filterType}
                                     filterTypes={filterTypes}
                                     onChange={filterType => setFilterType(i, filterType as FilterType)}

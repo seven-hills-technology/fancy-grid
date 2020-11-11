@@ -112,7 +112,9 @@ export function getFilterTypesForFieldType(fieldType: FieldType) {
                 FilterType.IsAfterOrEqualTo,
                 FilterType.IsAfter
             ]
-        default: 
-            return [];
+        case 'dropdown': 
+            return [
+                FilterType.IsEqualTo
+            ];
     }
 }
