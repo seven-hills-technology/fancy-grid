@@ -39,7 +39,6 @@ export const InlineFilterContainer: React.FunctionComponent<InlineFilterContaine
                 value={filterDefinition.value}
                 onChange={value => props.onFilterChange({...filterDefinition, value})}
                 filterType={filterDefinition.filterType}
-                dropdownOptions={props.columnDefinition.dropdownOptions}
             />
 
             {(filterTypes && filterTypes.length > 1 && props.columnDefinition.fieldType !== 'dropdown') &&

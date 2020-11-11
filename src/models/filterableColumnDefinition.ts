@@ -1,3 +1,4 @@
+import { DropdownOptionsDefinition } from "./dropdownOptionsDefinition";
 import { FilterType } from "./filterType";
 
 export interface FilterableColumnDefinition {
@@ -6,7 +7,7 @@ export interface FilterableColumnDefinition {
     filterStyle: "inline" | "popup";
     fieldType: FieldType;
     whiteList?: FilterType[]
-    dropdownOptions: string[];
+    dropdownOptions: DropdownOptionsDefinition[];
 }
 
 export type FieldType = "text" | "number" | "date" | "boolean" | "yesNo" | "dropdown";
