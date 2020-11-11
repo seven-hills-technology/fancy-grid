@@ -14,7 +14,6 @@ export interface FilterTypeDropdownButtonProps {
 
 export const FilterTypeDropdownButton: React.FunctionComponent<FilterTypeDropdownButtonProps> = props => {
     const {current: dropdownButtonId} = useRef(`filterTypeDropdownButton-${Math.random()}`);
-    console.log(props.disabled)
     return (
         <DropdownButton
             id={dropdownButtonId}

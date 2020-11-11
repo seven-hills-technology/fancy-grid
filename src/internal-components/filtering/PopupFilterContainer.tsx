@@ -95,7 +95,6 @@ const PopoverContainer: React.FunctionComponent<PopoverContainerProps> = props =
                                     <i className="fas fa-times-circle" />
                                 </Button>
                             </div>
-                            {console.log(props.columnDefinition)}
                             <FilterInput
                                 filterStyle="popup"
                                 columnDefinition={props.columnDefinition}
